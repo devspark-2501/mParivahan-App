@@ -4,48 +4,72 @@ import React from 'react';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        
-        {/* Brand & State Emblem */}
+    <header className="w-full bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm font-sans">
+      {/* Top Government Utility Bar */}
+      <div className="bg-slate-900 text-slate-300 text-xs py-2 px-4 sm:px-8 flex justify-between items-center border-b border-slate-800">
+        <div className="flex items-center space-x-6">
+          <span className="flex items-center gap-1.5 font-medium">
+            <svg className="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+            </svg>
+            Toll-Free: 1800-180-0151
+          </span>
+          <span className="hidden sm:inline-block text-slate-400">|</span>
+          <span className="hidden sm:inline-block text-slate-400">Ministry of Road Transport & Highways</span>
+        </div>
+
         <div className="flex items-center space-x-4">
-          <div className="p-1 bg-amber-50 rounded-lg border border-amber-200">
-            {/* Ashoka Emblem SVG Vector */}
-            <svg className="w-9 h-9 text-amber-700" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2L9 7H15L12 2ZM12 22C11.4 22 11 21.6 11 21V19H13V21C13 21.6 12.6 22 12 22ZM7 9L4 14H8L9 9H7ZM17 9L15 9L16 14H20L17 9ZM12 8C9.8 8 8 9.8 8 12C8 14.2 9.8 16 12 16C14.2 16 16 14.2 16 12C16 9.8 14.2 8 12 8ZM12 14.5C10.6 14.5 9.5 13.4 9.5 12C9.5 10.6 10.6 9.5 12 9.5C13.4 9.5 14.5 10.6 14.5 12C14.5 13.4 13.4 14.5 12 14.5Z" />
+          <button className="hover:text-white transition-colors">Screen Reader Access</button>
+          <span className="text-slate-600">|</span>
+          <div className="flex items-center gap-1">
+            <span className="text-[10px] font-bold uppercase bg-slate-800 px-1.5 py-0.5 rounded text-amber-400">GOI</span>
+            <span className="text-slate-300 font-medium">Govt. of India</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Navigation Bar */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        {/* Emblem & Branding */}
+        <div className="flex items-center space-x-4">
+          {/* State Emblem (Lion Capital of Ashoka Vector) */}
+          <div className="flex-shrink-0">
+            <svg className="w-10 h-12 text-slate-800" viewBox="0 0 100 120" fill="currentColor">
+              <path d="M50 0 C45 10 40 15 30 20 C25 22 20 20 15 25 C10 30 15 40 20 45 C15 50 10 60 15 70 C20 80 30 80 35 75 C40 85 45 90 50 90 C55 90 60 85 65 75 C70 80 80 80 85 70 C90 60 85 50 80 45 C85 40 90 30 85 25 C80 20 75 22 70 20 C60 15 55 10 50 0 Z M50 95 L20 95 L20 102 L80 102 L80 95 Z M30 105 L70 105 L70 112 L30 112 Z" />
+              <circle cx="50" cy="55" r="10" fill="none" stroke="currentColor" strokeWidth="3" />
             </svg>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-2xl tracking-tight text-slate-900">mParivahan</span>
-              <span className="px-2 py-0.5 text-[10px] font-bold bg-blue-100 text-blue-800 rounded-full border border-blue-200">OFFICIAL</span>
-            </div>
-            <p className="text-xs font-medium text-slate-500">Ministry of Road Transport & Highways • Govt. of India</p>
+          <div className="border-l border-slate-300 pl-4">
+            <h1 className="text-2xl font-black tracking-tight text-slate-900 leading-none">mParivahan</h1>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">National Citizen Transport Portal</p>
           </div>
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center space-x-4">
-          <div className="relative">
-            <select className="appearance-none bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold py-2.5 pl-9 pr-8 rounded-full border border-slate-300 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500">
+        {/* Links & Controls */}
+        <div className="flex items-center space-x-6">
+          <nav className="hidden lg:flex items-center space-x-8 text-sm font-semibold text-slate-700">
+            <a href="#" className="text-orange-600 hover:text-orange-700">Home</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">DL Services</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Vehicle Services</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Mock Test</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Helpdesk</a>
+          </nav>
+
+          <div className="flex items-center space-x-3">
+            {/* Language Selector */}
+            <select className="bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
               <option value="en">English</option>
               <option value="hi">हिन्दी (Hindi)</option>
-              <option value="bn">বাংলা (Bengali)</option>
-              <option value="ta">தமிழ் (Tamil)</option>
+              <option value="bn">বাংলা</option>
+              <option value="ta">தமிழ்</option>
             </select>
-            <svg className="w-4 h-4 text-slate-600 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1 4h6m-3 0v11M4 19h16" />
-            </svg>
+
+            {/* Login Pill Button */}
+            <button className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-sm transition-all hover:shadow-md">
+              Login / Register
+            </button>
           </div>
-
-          <button className="flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-6 py-2.5 rounded-full shadow-md transition-transform active:scale-95">
-            <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-            </svg>
-            <span>Login / Register</span>
-          </button>
         </div>
-
       </div>
     </header>
   );
