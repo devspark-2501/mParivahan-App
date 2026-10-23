@@ -4,7 +4,7 @@ import QuickServices from '@/components/QuickServices';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-slate-100 font-sans text-slate-900">
       <Header />
       <HeroCarousel />
       <QuickServices />
