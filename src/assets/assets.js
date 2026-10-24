@@ -1,28 +1,28 @@
-export const ASSET_IMAGES = {
-  dlSampleCard: "https://img.magnific.com/free-vector/flat-design-driving-license-template_23-2149902661.jpg",
-  rtoTestTrack: "https://th-i.thgim.com/public/news/cities/Mangalore/qcbn0e/article69807740.ece/alternates/FREE_1200/Automated%20driving%20testing%20track.jpg",
-  trafficSignsInfographic: "https://www.bankbazaar.com/images/india/infographic/mandatory-signs1.webp",
+export const INDIAN_GOVT_ASSETS = {
+  // Official Logos & Emblem
+  emblemOfIndia: "https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg",
+  mparivahanLogo: "https://parivahan.gov.in/parivahan/sites/default/files/logo.png",
+  digitalIndiaLogo: "https://upload.wikimedia.org/wikipedia/commons/9/95/Digital_India_logo.svg",
+  roadMinistryLogo: "https://upload.wikimedia.org/wikipedia/commons/e/e1/Ministry_of_Road_Transport_and_Highways.svg",
   
-  // Verification banner and official State Emblem
-  verificationBanner: "https://www.instantpay.in/blog/wp-content/uploads/2026/09/4.jpg",
-  nationalEmblem: "https://upload.wikimedia.org/wikipedia/commons/b/b4/Emblem_of_India_with_transparent_background.png",
+  // High-Resolution Banner & Category Imagery
+  heroBannerBg: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1200&auto=format&fit=crop", // Modern Indian Highway Infrastructure
+  rtoBuildingImg: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=800&auto=format&fit=crop",
+  twoWheelerImg: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=600&auto=format&fit=crop", // Motorcycle
+  fourWheelerImg: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=600&auto=format&fit=crop", // Car / LMV
+  commercialVehicleImg: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=600&auto=format&fit=crop", // Truck / Heavy
   
-  homePhotos: [
-    "/Home_Phtotos/image_one.jpeg",
-    "/Home_Phtotos/image_two.jpeg",
-    "/Home_Phtotos/image_three.jpeg",
-    "/Home_Phtotos/image_four.jpeg",
-    "/Home_Phtotos/image_five.jpeg"
-  ]
+  // Badges & Watermarks
+  g20Logo: "https://upload.wikimedia.org/wikipedia/commons/2/20/G20_India_2023_logo.svg",
+  azadiKaAmritMahotsav: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Azadi_Ka_Amrit_Mahotsav_Logo.svg",
+  ashokaChakra: "https://upload.wikimedia.org/wikipedia/commons/1/17/Ashoka_Chakra.svg"
 };
 
-// All 28 Indian States & 8 Union Territories
 export const INDIAN_STATES_AND_UTS = [
-  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", 
-  "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", 
-  "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", 
-  "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", 
-  "Uttar Pradesh", "Uttarakhand", "West Bengal",
-  "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", 
-  "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+  "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
+  "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa",
+  "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka",
+  "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur",
+  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan",
+  "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
 ];
