@@ -18,6 +18,9 @@ export const INDIAN_GOVT_ASSETS = {
   ashokaChakra: "https://upload.wikimedia.org/wikipedia/commons/1/17/Ashoka_Chakra.svg"
 };
 
+// Alias export so any file importing ASSET_IMAGES or INDIAN_GOVT_ASSETS works seamlessly
+export const ASSET_IMAGES = INDIAN_GOVT_ASSETS;
+
 export const INDIAN_STATES_AND_UTS = [
   "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
   "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa",

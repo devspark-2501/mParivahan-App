@@ -51,7 +51,7 @@ export default function Header() {
             <Link href="/" className="text-orange-600 hover:text-orange-700">Home</Link>
             <Link href="/dl-services" className="hover:text-slate-900 transition-colors">DL Services</Link>
             <Link href="/vehicle-services" className="hover:text-slate-900 transition-colors">Vehicle Services</Link>
-            <Link href="/mock-test" className="hover:text-slate-900 transition-colors">Mock Test</Link>
+            <Link href="/about-us" className="hover:text-slate-900 transition-colors">About Us</Link>
             <Link href="/helpdesk" className="hover:text-slate-900 transition-colors">Helpdesk</Link>
           </nav>
 
