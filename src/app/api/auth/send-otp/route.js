@@ -18,75 +18,55 @@ export async function POST(request) {
     // Generate random 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Store/update OTP in MongoDB user record
+    // Store or update OTP in MongoDB
     let user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
       user = await User.create({
         fullName: 'Citizen Applicant',
         email: email.toLowerCase(),
-        password: otp, // Temporarily holding OTP for verification
+        password: otp,
       });
     } else {
       user.password = otp;
       await user.save();
     }
 
-    // Configure Nodemailer Transport
-    let transporter;
-    if (process.env.SMTP_HOST && process.env.SMTP_USER) {
-      transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT) || 587,
-        secure: false,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
-        },
-      });
-    } else {
-      // Automatic fallback using Ethereal test account if SMTP is not configured
-      const testAccount = await nodemailer.createTestAccount();
-      transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass,
-        },
-      });
-    }
+    // Configure Nodemailer using your Gmail App Password credentials
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-    // Send Email
-    const mailOptions = {
-      from: '"mParivahan Portal" <noreply@mparivahan.gov.in>',
+    // Send Email to the user who requested the OTP
+    await transporter.sendMail({
+      from: `"mParivahan Portal" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: 'mParivahan Portal Verification Code',
+      subject: 'mParivahan Citizen Portal Verification Code',
       html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-          <h2 style="color: #ea580c;">mParivahan Citizen Authentication</h2>
-          <p>Your official 6-digit verification code for portal access is:</p>
-          <div style="background: #f1f5f9; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #0f172a; border-radius: 8px;">
+        <div style="font-family: Arial, sans-serif; padding: 20px; color: #1e293b; max-width: 500px; border: 1px solid #e2e8f0; border-radius: 12px;">
+          <h2 style="color: #ea580c; margin-bottom: 8px;">mParivahan Single Sign-On</h2>
+          <p style="font-size: 14px; color: #64748b;">Your 6-digit verification code to sign into the portal is:</p>
+          <div style="background: #f8fafc; padding: 16px; text-align: center; font-size: 28px; font-weight: 900; letter-spacing: 6px; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 8px; margin: 16px 0;">
             ${otp}
           </div>
-          <p style="font-size: 12px; color: #64748b; margin-top: 15px;">This code is valid for 10 minutes. Please do not share it with anyone.</p>
+          <p style="font-size: 12px; color: #94a3b8;">This code is valid for 10 minutes. Please do not share it with anyone.</p>
         </div>
       `,
-    };
-
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Nodemailer info:', info.messageId);
+    });
 
     return NextResponse.json({
       success: true,
-      message: `OTP sent successfully to ${email}`,
-      devOtp: otp, // For seamless testing during hackathon demo
+      message: `OTP successfully sent to ${email}`,
+      devOtp: otp, // For quick testing during presentation
     });
 
   } catch (error) {
-    console.error('Send Email OTP Error:', error);
+    console.error('Nodemailer Send Error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to send Email OTP.' },
+      { success: false, message: 'Failed to send OTP email. Please check your SMTP settings.' },
       { status: 500 }
     );
   }
