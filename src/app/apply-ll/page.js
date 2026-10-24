@@ -1,14 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { INDIAN_STATES_AND_UTS } from '@/assets/assets';
+import { INDIAN_STATES_AND_UTS, INDIAN_GOVT_ASSETS } from '@/assets/assets';
 
 export default function ApplyLLPage() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     state: 'Delhi',
-    rtoOffice: 'RTO Delhi Central',
+    rtoOffice: 'RTO Delhi Central (DL-01)',
     fullName: '',
     relation: 'Father',
     relativeName: '',
@@ -18,18 +21,18 @@ export default function ApplyLLPage() {
     mobile: '',
     email: '',
     aadhaar: '',
-    vehicleCategory: 'MCWOG', // MCWOG = Motorcycles without gear (16-18), MCWG/LMV = 18+
+    vehicleCategory: 'MCWOG',
     address: '',
     pincode: '',
     bloodGroup: 'A+',
     captchaInput: '',
   });
 
-  const [captchaCode, setCaptchaCode] = useState('7K2P9M');
+  const [captchaCode, setCaptchaCode] = useState('7K9M2P');
   const [submitted, setSubmitted] = useState(false);
   const [applicationNo, setApplicationNo] = useState('');
 
-  // Handle Date of Birth change and calculate age
+  // Calculate age dynamically from DOB
   const handleDobChange = (e) => {
     const dobValue = e.target.value;
     if (!dobValue) return;
@@ -47,7 +50,6 @@ export default function ApplyLLPage() {
       ...prev,
       dob: dobValue,
       age: calculatedAge,
-      // Auto-restrict vehicle category if age is under 18
       vehicleCategory: calculatedAge < 18 ? 'MCWOG' : prev.vehicleCategory,
     }));
   };
@@ -61,16 +63,15 @@ export default function ApplyLLPage() {
     e.preventDefault();
 
     if (formData.age < 16) {
-      alert('Minimum age for applying for a Learner’s Licence in India is 16 years.');
+      alert("Minimum age requirement for a Learner's Licence in India is 16 years.");
       return;
     }
 
     if (formData.captchaInput.toUpperCase() !== captchaCode) {
-      alert('Invalid CAPTCHA code. Please try again.');
+      alert('Invalid Security CAPTCHA code. Please try again.');
       return;
     }
 
-    // Generate unique Application Number
     const generatedAppNo = 'LL-' + Math.floor(10000000 + Math.random() * 90000000);
     setApplicationNo(generatedAppNo);
     setSubmitted(true);
@@ -80,251 +81,349 @@ export default function ApplyLLPage() {
     <div className="min-h-screen bg-slate-100 font-sans text-slate-900 flex flex-col">
       <Header />
 
-      <main className="flex-grow max-w-4xl w-full mx-auto px-4 py-8 space-y-6">
+      {/* Top Ministry Banner Strip */}
+      <div className="bg-slate-900 text-white py-2 px-4 border-b border-slate-800 text-xs">
+        <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-3">
+            <img src={INDIAN_GOVT_ASSETS.emblemOfIndia} alt="Emblem" className="h-6 w-auto filter invert brightness-200" />
+            <span className="font-semibold text-slate-300">MoRTH • Ministry of Road Transport and Highways</span>
+          </div>
+          <div className="flex items-center gap-4 text-[11px] font-medium text-slate-400">
+            <span>Official Sarathi Portal</span>
+            <span>•</span>
+            <span className="text-orange-400 font-bold">Government of India</span>
+          </div>
+        </div>
+      </div>
+
+      <main className="flex-grow max-w-5xl w-full mx-auto px-4 py-8 space-y-8">
         
-        {/* Banner Section - CSS Built-in Gradient and SVG Graphic */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white shadow-xl border border-slate-800">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:2rem_2rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30"></div>
-          
-          <div className="relative p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="space-y-3 text-center sm:text-left">
-              <span className="inline-block text-xs font-bold uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30 px-3 py-1 rounded-full">
-                Government of India • Ministry of Road Transport
-              </span>
-              <h1 className="text-3xl font-black text-white tracking-tight">
-                Learner's Licence Application
+        {/* Main Hero Header Banner with Highway Image & Badges */}
+        <div className="relative overflow-hidden rounded-3xl bg-slate-950 text-white shadow-2xl border border-slate-800">
+          <img 
+            src={INDIAN_GOVT_ASSETS.heroBannerBg} 
+            alt="National Highway Infrastructure" 
+            className="absolute inset-0 w-full h-full object-cover opacity-25"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/90 to-transparent"></div>
+
+          <div className="relative p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="space-y-4 text-center md:text-left max-w-2xl">
+              <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
+                <span className="inline-block text-[11px] font-black uppercase tracking-wider bg-orange-500 text-slate-950 px-3 py-1 rounded-full shadow">
+                  FORM 2 • MV ACT 1988
+                </span>
+                <span className="text-xs text-slate-300 font-semibold bg-white/10 px-3 py-1 rounded-full backdrop-blur-md">
+                  e-Governance Citizen Services
+                </span>
+              </div>
+
+              <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white leading-tight">
+                Application for Issue of <span className="text-orange-500">Learner's Licence</span>
               </h1>
-              <p className="text-xs text-slate-300 max-w-md">
-                Official online application portal for issue of New Learner's Licence (Form 2) under Motor Vehicles Act.
+              
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Submit your official application, upload supporting documents, and complete the instant online RTO screening test to secure your digital Learner's Licence.
               </p>
             </div>
 
-            {/* Emblem / Badge Icon */}
-            <div className="w-20 h-20 bg-white/10 rounded-2xl border border-white/20 backdrop-blur-md flex items-center justify-center shrink-0">
-              <svg className="w-10 h-10 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
+            {/* Official Digital India & Emblem Badges */}
+            <div className="flex flex-row md:flex-col items-center gap-4 shrink-0 bg-white/10 p-4 rounded-2xl border border-white/20 backdrop-blur-md">
+              <img src={INDIAN_GOVT_ASSETS.emblemOfIndia} alt="State Emblem" className="h-12 w-auto filter invert" />
+              <div className="text-center">
+                <p className="text-[10px] font-black uppercase tracking-widest text-orange-400">Satyameva Jayate</p>
+                <p className="text-[9px] font-bold text-slate-300">Govt. of India</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {submitted ? (
-          /* Submission Success Screen */
-          <div className="bg-white rounded-2xl p-8 sm:p-10 border border-slate-200 shadow-xl text-center space-y-6">
-            <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl font-black">
-              ✓
-            </div>
-            <div className="space-y-2">
-              <h2 className="text-2xl font-black text-slate-900">Application Submitted Successfully!</h2>
-              <p className="text-xs text-slate-600">
-                Your Learner's Licence application has been registered in the Sarathi database.
-              </p>
-            </div>
-
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 max-w-md mx-auto space-y-2 text-left">
-              <p className="text-xs text-slate-500 font-medium">Application Number:</p>
-              <p className="text-xl font-mono font-black text-slate-900 tracking-wider">{applicationNo}</p>
-              <div className="pt-2 border-t border-slate-200 text-xs text-slate-600 space-y-1">
-                <p><strong>Applicant:</strong> {formData.fullName}</p>
-                <p><strong>State / RTO:</strong> {formData.state} ({formData.rtoOffice})</p>
-                <p><strong>Category:</strong> {formData.vehicleCategory}</p>
+        {/* Application Form */}
+        <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl space-y-10">
+          
+          {/* Section 1: Jurisdiction & RTO */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 border-b pb-3 border-slate-200">
+              <span className="w-8 h-8 bg-orange-600 text-white rounded-xl flex items-center justify-center font-black text-sm shadow">
+                1
+              </span>
+              <div>
+                <h3 className="text-base font-black text-slate-900 uppercase">State & RTO Office Jurisdiction</h3>
+                <p className="text-xs text-slate-500">Select the state and regional transport office responsible for your jurisdiction.</p>
               </div>
             </div>
 
-            <button
-              onClick={() => window.location.reload()}
-              className="bg-slate-900 text-white text-xs font-bold px-6 py-3 rounded-xl hover:bg-slate-800 transition"
-            >
-              Submit Another Application
-            </button>
-          </div>
-        ) : (
-          /* Learner's Licence Form */
-          <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-xl space-y-8">
-            
-            {/* Section 1: Location & RTO */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-black text-slate-900 uppercase tracking-wide border-b pb-2 border-slate-200 flex items-center gap-2">
-                <span className="w-5 h-5 bg-orange-600 text-white rounded-full flex items-center justify-center text-[10px]">1</span>
-                State & RTO Selection
-              </h3>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">State</label>
-                  <select
-                    name="state"
-                    value={formData.state}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-orange-500 bg-white"
-                  >
-                    {INDIAN_STATES_AND_UTS.map((st, i) => (
-                      <option key={i} value={st}>{st}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">RTO Office</label>
-                  <input
-                    type="text"
-                    name="rtoOffice"
-                    value={formData.rtoOffice}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-orange-500"
-                    placeholder="e.g. RTO Delhi Central"
-                    required
-                  />
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Select State / UT *</label>
+                <select
+                  name="state"
+                  value={formData.state}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500 bg-white"
+                >
+                  {INDIAN_STATES_AND_UTS.map((st, i) => (
+                    <option key={i} value={st}>{st}</option>
+                  ))}
+                </select>
               </div>
-            </div>
-
-            {/* Section 2: Personal Details */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-black text-slate-900 uppercase tracking-wide border-b pb-2 border-slate-200 flex items-center gap-2">
-                <span className="w-5 h-5 bg-orange-600 text-white rounded-full flex items-center justify-center text-[10px]">2</span>
-                Personal Details
-              </h3>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Full Name</label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-orange-500"
-                    placeholder="As per Aadhaar card"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Date of Birth</label>
-                  <input
-                    type="date"
-                    name="dob"
-                    value={formData.dob}
-                    onChange={handleDobChange}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-orange-500"
-                    required
-                  />
-                  {formData.age > 0 && (
-                    <p className={`text-[11px] mt-1 font-bold ${formData.age < 16 ? 'text-red-600' : 'text-emerald-700'}`}>
-                      Calculated Age: {formData.age} Years {formData.age < 16 && '(Under minimum age 16)'}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Relation</label>
-                  <select
-                    name="relation"
-                    value={formData.relation}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-orange-500 bg-white"
-                  >
-                    <option value="Father">Father</option>
-                    <option value="Mother">Mother</option>
-                    <option value="Husband">Husband</option>
-                    <option value="Guardian">Guardian</option>
-                  </select>
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Relative Name</label>
-                  <input
-                    type="text"
-                    name="relativeName"
-                    value={formData.relativeName}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-orange-500"
-                    placeholder="Enter relative's full name"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Section 3: Vehicle Category */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-black text-slate-900 uppercase tracking-wide border-b pb-2 border-slate-200 flex items-center gap-2">
-                <span className="w-5 h-5 bg-orange-600 text-white rounded-full flex items-center justify-center text-[10px]">3</span>
-                Vehicle Class
-              </h3>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Licence Category</label>
-                <select
-                  name="vehicleCategory"
-                  value={formData.vehicleCategory}
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">RTO Office Location *</label>
+                <input
+                  type="text"
+                  name="rtoOffice"
+                  value={formData.rtoOffice}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-orange-500 bg-white"
-                >
-                  <option value="MCWOG">Motorcycle Without Gear (50cc) - Age 16+</option>
-                  {formData.age >= 18 && (
-                    <>
-                      <option value="MCWG">Motorcycle With Gear (MCWG) - Age 18+</option>
-                      <option value="LMV">Light Motor Vehicle (Car / LMV) - Age 18+</option>
-                    </>
-                  )}
-                </select>
-                {formData.age > 0 && formData.age < 18 && (
-                  <p className="text-[11px] text-amber-700 mt-1.5 font-medium bg-amber-50 p-2 rounded border border-amber-200">
-                    ℹ️ Applicants aged 16 to 18 are eligible only for Motorcycle Without Gear (MCWOG).
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500"
+                  placeholder="e.g. RTO Delhi Central (DL-01)"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Personal Details */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 border-b pb-3 border-slate-200">
+              <span className="w-8 h-8 bg-orange-600 text-white rounded-xl flex items-center justify-center font-black text-sm shadow">
+                2
+              </span>
+              <div>
+                <h3 className="text-base font-black text-slate-900 uppercase">Applicant Details</h3>
+                <p className="text-xs text-slate-500">Enter your personal details exactly as printed on your Aadhaar card.</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Full Name (As per Aadhaar) *</label>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500"
+                  placeholder="e.g. Rahul Sharma"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Date of Birth *</label>
+                <input
+                  type="date"
+                  name="dob"
+                  value={formData.dob}
+                  onChange={handleDobChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500"
+                  required
+                />
+                {formData.age > 0 && (
+                  <p className={`text-xs mt-1.5 font-bold ${formData.age < 16 ? 'text-red-600' : 'text-emerald-700'}`}>
+                    Calculated Age: {formData.age} Years {formData.age < 16 && '(Eligible age is 16+)'}
                   </p>
                 )}
               </div>
             </div>
 
-            {/* Section 4: CAPTCHA Verification */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-black text-slate-900 uppercase tracking-wide border-b pb-2 border-slate-200 flex items-center gap-2">
-                <span className="w-5 h-5 bg-orange-600 text-white rounded-full flex items-center justify-center text-[10px]">4</span>
-                Security CAPTCHA
-              </h3>
-
-              <div className="flex items-center gap-4">
-                <div className="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-mono text-lg font-black tracking-widest select-none">
-                  {captchaCode}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setCaptchaCode(Math.random().toString(36).substring(2, 8).toUpperCase())}
-                  className="text-xs text-orange-600 font-bold hover:underline"
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Relation *</label>
+                <select
+                  name="relation"
+                  value={formData.relation}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500 bg-white"
                 >
-                  ↻ Refresh Code
-                </button>
+                  <option value="Father">Father</option>
+                  <option value="Mother">Mother</option>
+                  <option value="Husband">Husband</option>
+                  <option value="Guardian">Guardian</option>
+                </select>
               </div>
 
-              <div>
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Relative's Full Name *</label>
                 <input
                   type="text"
-                  name="captchaInput"
-                  value={formData.captchaInput}
+                  name="relativeName"
+                  value={formData.relativeName}
                   onChange={handleInputChange}
-                  placeholder="Enter CAPTCHA code"
-                  className="w-full sm:w-64 px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-orange-500 uppercase"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500"
+                  placeholder="Enter relative's full name"
                   required
                 />
               </div>
             </div>
+          </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl text-sm shadow-lg transition-all active:scale-95"
-            >
-              Submit Application →
-            </button>
+          {/* Section 3: Visual Vehicle Category Cards */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 border-b pb-3 border-slate-200">
+              <span className="w-8 h-8 bg-orange-600 text-white rounded-xl flex items-center justify-center font-black text-sm shadow">
+                3
+              </span>
+              <div>
+                <h3 className="text-base font-black text-slate-900 uppercase">Class of Vehicles (COV)</h3>
+                <p className="text-xs text-slate-500">Select the vehicle category you are applying to operate.</p>
+              </div>
+            </div>
 
-          </form>
-        )}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
+              
+              {/* Card 1: Two Wheeler (50cc / MCWOG) */}
+              <div 
+                onClick={() => setFormData({ ...formData, vehicleCategory: 'MCWOG' })}
+                className={`relative rounded-2xl overflow-hidden border-2 cursor-pointer transition-all shadow-md ${
+                  formData.vehicleCategory === 'MCWOG' ? 'border-orange-600 ring-2 ring-orange-500/50 bg-orange-50/30' : 'border-slate-200 hover:border-slate-300 bg-white'
+                }`}
+              >
+                <img src={INDIAN_GOVT_ASSETS.twoWheelerImg} alt="Motorcycle" className="h-32 w-full object-cover" />
+                <div className="p-4 space-y-1">
+                  <span className="text-[10px] font-black text-orange-600 uppercase tracking-wider bg-orange-100 px-2 py-0.5 rounded">
+                    Age 16+ Allowed
+                  </span>
+                  <h4 className="text-sm font-black text-slate-900">MCWOG / Scooter</h4>
+                  <p className="text-[11px] text-slate-500">Motorcycle Without Gear (Engine capacity up to 50cc)</p>
+                </div>
+              </div>
 
+              {/* Card 2: Motorcycle With Gear (MCWG) */}
+              <div 
+                onClick={() => {
+                  if (formData.age < 18 && formData.age !== 0) {
+                    alert("Motorcycle With Gear (MCWG) requires minimum age of 18 years.");
+                    return;
+                  }
+                  setFormData({ ...formData, vehicleCategory: 'MCWG' });
+                }}
+                className={`relative rounded-2xl overflow-hidden border-2 cursor-pointer transition-all shadow-md ${
+                  formData.age < 18 && formData.age !== 0 ? 'opacity-40 cursor-not-allowed bg-slate-100' : ''
+                } ${
+                  formData.vehicleCategory === 'MCWG' ? 'border-orange-600 ring-2 ring-orange-500/50 bg-orange-50/30' : 'border-slate-200 hover:border-slate-300 bg-white'
+                }`}
+              >
+                <img src={INDIAN_GOVT_ASSETS.twoWheelerImg} alt="Motorcycle With Gear" className="h-32 w-full object-cover filter contrast-125" />
+                <div className="p-4 space-y-1">
+                  <span className="text-[10px] font-black text-blue-600 uppercase tracking-wider bg-blue-100 px-2 py-0.5 rounded">
+                    Age 18+ Mandatory
+                  </span>
+                  <h4 className="text-sm font-black text-slate-900">MCWG (With Gear)</h4>
+                  <p className="text-[11px] text-slate-500">All geared motorcycles and geared two-wheelers</p>
+                </div>
+              </div>
+
+              {/* Card 3: Light Motor Vehicle (LMV / Car) */}
+              <div 
+                onClick={() => {
+                  if (formData.age < 18 && formData.age !== 0) {
+                    alert("Light Motor Vehicle (LMV) requires minimum age of 18 years.");
+                    return;
+                  }
+                  setFormData({ ...formData, vehicleCategory: 'LMV' });
+                }}
+                className={`relative rounded-2xl overflow-hidden border-2 cursor-pointer transition-all shadow-md ${
+                  formData.age < 18 && formData.age !== 0 ? 'opacity-40 cursor-not-allowed bg-slate-100' : ''
+                } ${
+                  formData.vehicleCategory === 'LMV' ? 'border-orange-600 ring-2 ring-orange-500/50 bg-orange-50/30' : 'border-slate-200 hover:border-slate-300 bg-white'
+                }`}
+              >
+                <img src={INDIAN_GOVT_ASSETS.fourWheelerImg} alt="Light Motor Vehicle" className="h-32 w-full object-cover" />
+                <div className="p-4 space-y-1">
+                  <span className="text-[10px] font-black text-blue-600 uppercase tracking-wider bg-blue-100 px-2 py-0.5 rounded">
+                    Age 18+ Mandatory
+                  </span>
+                  <h4 className="text-sm font-black text-slate-900">LMV (Car / Jeep)</h4>
+                  <p className="text-[11px] text-slate-500">Light Motor Vehicles, motorcars, and non-transport jeeps</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Section 4: Security CAPTCHA */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 border-b pb-3 border-slate-200">
+              <span className="w-8 h-8 bg-orange-600 text-white rounded-xl flex items-center justify-center font-black text-sm shadow">
+                4
+              </span>
+              <div>
+                <h3 className="text-base font-black text-slate-900 uppercase">Security Verification</h3>
+                <p className="text-xs text-slate-500">Type the characters shown in the CAPTCHA box to prevent automated submissions.</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
+              <div className="bg-slate-900 text-orange-400 px-6 py-3 rounded-2xl font-mono text-xl font-black tracking-widest border border-slate-800 shadow-inner select-none">
+                {captchaCode}
+              </div>
+              <button
+                type="button"
+                onClick={() => setCaptchaCode(Math.random().toString(36).substring(2, 8).toUpperCase())}
+                className="text-xs font-bold text-orange-600 hover:underline"
+              >
+                ↻ Refresh Code
+              </button>
+              <input
+                type="text"
+                name="captchaInput"
+                value={formData.captchaInput}
+                onChange={handleInputChange}
+                placeholder="Enter CAPTCHA"
+                className="w-full sm:w-64 px-4 py-3 rounded-xl border border-slate-300 text-sm font-bold uppercase focus:ring-2 focus:ring-orange-500"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Submit Application Button */}
+          <button
+            type="submit"
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-4 rounded-2xl text-sm shadow-xl transition-all active:scale-95"
+          >
+            Submit Learner's Licence Application →
+          </button>
+
+        </form>
       </main>
+
+      {/* Success Popup Modal */}
+      {submitted && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-slate-200 shadow-2xl text-center space-y-6 animate-in fade-in zoom-in duration-200">
+            <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl font-black shadow-inner">
+              ✓
+            </div>
+
+            <div className="space-y-2">
+              <span className="text-[10px] font-black uppercase text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+                Application Registered
+              </span>
+              <h2 className="text-2xl font-black text-slate-900 tracking-tight">Form Submitted Successfully!</h2>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Your application has been logged in the Sarathi database with Reference Number:
+              </p>
+              <div className="bg-slate-100 p-3 rounded-xl font-mono text-lg font-black text-slate-900 border border-slate-300 tracking-wider">
+                {applicationNo}
+              </div>
+            </div>
+
+            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-700 text-left space-y-1.5">
+              <p><strong>Applicant:</strong> {formData.fullName}</p>
+              <p><strong>RTO Jurisdiction:</strong> {formData.rtoOffice}</p>
+              <p><strong>Applied Category:</strong> {formData.vehicleCategory}</p>
+            </div>
+
+            <button
+              onClick={() => router.push('/admission-test')}
+              className="w-full bg-slate-900 hover:bg-slate-800 text-white font-black py-4 rounded-2xl text-xs shadow-xl transition-all active:scale-95"
+            >
+              Appear for Online RTO Screening Test Now →
+            </button>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
