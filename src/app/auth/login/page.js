@@ -10,13 +10,12 @@ function LoginFormContent() {
   const searchParams = useSearchParams();
   const redirectTarget = searchParams.get('redirect') || '/dl-services';
 
-  const [step, setStep] = useState(1); // Step 1: Enter Mobile, Step 2: Enter 6-digit WhatsApp OTP
+  const [step, setStep] = useState(1);
   const [mobile, setMobile] = useState('');
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [devHintOtp, setDevHintOtp] = useState('');
 
-  // Step 1: Request WhatsApp OTP
   const handleRequestOtp = async (e) => {
     e.preventDefault();
     if (mobile.length !== 10) {
@@ -25,18 +24,15 @@ function LoginFormContent() {
     }
 
     setLoading(true);
-
     try {
       const res = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mobile }),
       });
-
       const data = await res.json();
-
       if (res.ok) {
-        setDevHintOtp(data.devOtp); // Helpful for hackathon demo
+        setDevHintOtp(data.devOtp);
         setStep(2);
       } else {
         alert(data.message || 'Failed to send OTP.');
@@ -48,7 +44,6 @@ function LoginFormContent() {
     }
   };
 
-  // Step 2: Verify WhatsApp OTP & Login
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     if (otp.length !== 6) {
@@ -57,16 +52,13 @@ function LoginFormContent() {
     }
 
     setLoading(true);
-
     try {
       const res = await fetch('/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mobile, otp }),
       });
-
       const data = await res.json();
-
       if (res.ok) {
         localStorage.setItem('isLoggedIn', 'true');
         router.push(redirectTarget);
@@ -74,16 +66,14 @@ function LoginFormContent() {
         alert(data.message || 'Invalid OTP code.');
       }
     } catch (err) {
-      alert('Verification failed. Please try again.');
+      alert('Verification failed.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto my-16 bg-white p-8 sm:p-10 rounded-2xl border border-slate-200 shadow-xl space-y-6">
-      
-      {/* Header with clean vertical padding to avoid overlap */}
+    <div className="max-w-md mx-auto mt-12 mb-16 bg-white p-8 sm:p-10 rounded-2xl border border-slate-200 shadow-xl space-y-6">
       <div className="text-center space-y-3">
         <span className="inline-block text-xs font-extrabold uppercase tracking-wider text-orange-700 bg-orange-50 px-3.5 py-1.5 rounded-full border border-orange-200 shadow-sm">
           mParivahan Single Sign-On
@@ -99,7 +89,6 @@ function LoginFormContent() {
       </div>
 
       {step === 1 ? (
-        /* Step 1 Form: Mobile Number Input */
         <form onSubmit={handleRequestOtp} className="space-y-5">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
@@ -114,7 +103,7 @@ function LoginFormContent() {
                 placeholder="Enter 10-digit number"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value.replace(/\D/g, ''))}
-                className="w-full pl-14 pr-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                className="w-full pl-14 pr-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
           </div>
@@ -128,7 +117,6 @@ function LoginFormContent() {
           </button>
         </form>
       ) : (
-        /* Step 2 Form: 6-Digit OTP Verification */
         <form onSubmit={handleVerifyOtp} className="space-y-5">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
@@ -141,10 +129,9 @@ function LoginFormContent() {
               placeholder="1 2 3 4 5 6"
               value={otp}
               onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-              className="w-full text-center tracking-[0.5em] text-lg font-black px-4 py-3.5 rounded-xl border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all bg-slate-50"
+              className="w-full text-center tracking-[0.5em] text-lg font-black px-4 py-3.5 rounded-xl border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-slate-50"
             />
             
-            {/* Hackathon Helper Hint */}
             {devHintOtp && (
               <div className="mt-2.5 p-2 bg-amber-50 border border-amber-200 rounded-lg text-center">
                 <p className="text-[11px] font-bold text-amber-800">
@@ -154,19 +141,8 @@ function LoginFormContent() {
             )}
 
             <div className="flex justify-between items-center mt-3 text-xs">
-              <button 
-                type="button" 
-                onClick={() => setStep(1)} 
-                className="text-orange-600 font-semibold hover:underline"
-              >
+              <button type="button" onClick={() => setStep(1)} className="text-orange-600 font-semibold hover:underline">
                 ← Change Mobile Number
-              </button>
-              <button 
-                type="button" 
-                onClick={() => alert(`Resent OTP: ${devHintOtp}`)} 
-                className="text-slate-600 font-bold hover:underline"
-              >
-                Resend OTP
               </button>
             </div>
           </div>
@@ -176,33 +152,28 @@ function LoginFormContent() {
             disabled={loading}
             className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3.5 rounded-xl text-sm shadow-md transition-all active:scale-95 disabled:opacity-50"
           >
-            {loading ? 'Verifying & Logging In...' : 'Verify & Proceed'}
+            {loading ? 'Verifying...' : 'Verify & Proceed'}
           </button>
         </form>
       )}
 
-      {/* Footer Signup Link */}
       <div className="text-center pt-4 border-t border-slate-100">
         <p className="text-xs text-slate-600">
           Don't have an account?{' '}
-          <Link 
-            href={`/auth/signup?redirect=${encodeURIComponent(redirectTarget)}`}
-            className="font-bold text-orange-600 hover:text-orange-700 underline"
-          >
+          <Link href={`/auth/signup?redirect=${encodeURIComponent(redirectTarget)}`} className="font-bold text-orange-600 hover:text-orange-700 underline">
             Register New Account
           </Link>
         </p>
       </div>
-
     </div>
   );
 }
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-slate-100 font-sans text-slate-900">
+    <div className="min-h-screen bg-slate-100 font-sans text-slate-900 pt-6">
       <Header />
-      <Suspense fallback={<div className="text-center py-20 text-sm font-semibold text-slate-500">Loading Secure Portal...</div>}>
+      <Suspense fallback={<div className="text-center py-20 text-sm font-semibold text-slate-500">Loading Portal...</div>}>
         <LoginFormContent />
       </Suspense>
     </div>
