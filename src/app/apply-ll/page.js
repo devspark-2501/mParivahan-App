@@ -28,11 +28,13 @@ export default function ApplyLLPage() {
     captchaInput: '',
   });
 
+  const [idFile, setIdFile] = useState(null);
+  const [birthFile, setBirthFile] = useState(null);
   const [captchaCode, setCaptchaCode] = useState('7K9M2P');
   const [submitted, setSubmitted] = useState(false);
   const [applicationNo, setApplicationNo] = useState('');
 
-  // Calculate age dynamically from DOB
+  // Calculate age dynamically from DOB and update age-gated choices
   const handleDobChange = (e) => {
     const dobValue = e.target.value;
     if (!dobValue) return;
@@ -98,7 +100,7 @@ export default function ApplyLLPage() {
 
       <main className="flex-grow max-w-5xl w-full mx-auto px-4 py-8 space-y-8">
         
-        {/* Main Hero Header Banner with Highway Image & Badges */}
+        {/* Main Hero Header Banner */}
         <div className="relative overflow-hidden rounded-3xl bg-slate-950 text-white shadow-2xl border border-slate-800">
           <img 
             src={INDIAN_GOVT_ASSETS.heroBannerBg} 
@@ -123,7 +125,7 @@ export default function ApplyLLPage() {
               </h1>
               
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Submit your official application, upload supporting documents, and complete the instant online RTO screening test to secure your digital Learner's Licence.
+                Submit your official application, upload supporting document proofs, and complete the instant online RTO screening test to secure your digital Learner's Licence.
               </p>
             </div>
 
@@ -183,15 +185,15 @@ export default function ApplyLLPage() {
             </div>
           </div>
 
-          {/* Section 2: Personal Details */}
+          {/* Section 2: Personal & Contact Details */}
           <div className="space-y-4">
             <div className="flex items-center gap-3 border-b pb-3 border-slate-200">
               <span className="w-8 h-8 bg-orange-600 text-white rounded-xl flex items-center justify-center font-black text-sm shadow">
                 2
               </span>
               <div>
-                <h3 className="text-base font-black text-slate-900 uppercase">Applicant Details</h3>
-                <p className="text-xs text-slate-500">Enter your personal details exactly as printed on your Aadhaar card.</p>
+                <h3 className="text-base font-black text-slate-900 uppercase">Applicant & Contact Information</h3>
+                <p className="text-xs text-slate-500">Enter personal details and official identity credentials.</p>
               </div>
             </div>
 
@@ -252,6 +254,113 @@ export default function ApplyLLPage() {
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500"
                   placeholder="Enter relative's full name"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Gender *</label>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500 bg-white"
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Mobile Number *</label>
+                <input
+                  type="tel"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500"
+                  placeholder="10-digit mobile number"
+                  maxLength={10}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Blood Group</label>
+                <select
+                  name="bloodGroup"
+                  value={formData.bloodGroup}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500 bg-white"
+                >
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Email Address *</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500"
+                  placeholder="citizen@example.com"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Aadhaar Card Number *</label>
+                <input
+                  type="text"
+                  name="aadhaar"
+                  value={formData.aadhaar}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500"
+                  placeholder="12-digit Aadhaar number"
+                  maxLength={12}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Permanent Residential Address *</label>
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500"
+                  placeholder="Flat / House No., Street, Locality"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Pincode *</label>
+                <input
+                  type="text"
+                  name="pincode"
+                  value={formData.pincode}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-orange-500"
+                  placeholder="6-digit pincode"
+                  maxLength={6}
                   required
                 />
               </div>
@@ -342,11 +451,64 @@ export default function ApplyLLPage() {
             </div>
           </div>
 
-          {/* Section 4: Security CAPTCHA */}
+          {/* Section 4: Drag & Drop Document Uploads */}
           <div className="space-y-4">
             <div className="flex items-center gap-3 border-b pb-3 border-slate-200">
               <span className="w-8 h-8 bg-orange-600 text-white rounded-xl flex items-center justify-center font-black text-sm shadow">
                 4
+              </span>
+              <div>
+                <h3 className="text-base font-black text-slate-900 uppercase">Upload Supporting Document Proofs</h3>
+                <p className="text-xs text-slate-500">Upload clear scanned copies or photos of your identification and age proofs.</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+              
+              {/* Document 1: Aadhaar Card / ID Proof */}
+              <div className="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center space-y-3 bg-slate-50 hover:bg-slate-100 transition shadow-sm">
+                <span className="text-3xl">📄</span>
+                <div>
+                  <p className="text-xs font-black text-slate-900">Identity / Aadhaar Card Proof *</p>
+                  <p className="text-[11px] text-slate-500">Drag & drop your file here or click browse</p>
+                </div>
+                <input 
+                  type="file" 
+                  onChange={(e) => setIdFile(e.target.files[0]?.name)} 
+                  className="hidden" 
+                  id="idDoc" 
+                />
+                <label htmlFor="idDoc" className="inline-block bg-slate-900 text-white text-xs px-5 py-2.5 rounded-xl font-bold cursor-pointer hover:bg-slate-800 transition">
+                  {idFile ? `Selected: ${idFile}` : 'Browse File'}
+                </label>
+              </div>
+
+              {/* Document 2: Birth Certificate */}
+              <div className="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center space-y-3 bg-slate-50 hover:bg-slate-100 transition shadow-sm">
+                <span className="text-3xl">🎂</span>
+                <div>
+                  <p className="text-xs font-black text-slate-900">Birth Certificate / Age Proof *</p>
+                  <p className="text-[11px] text-slate-500">Drag & drop your file here or click browse</p>
+                </div>
+                <input 
+                  type="file" 
+                  onChange={(e) => setBirthFile(e.target.files[0]?.name)} 
+                  className="hidden" 
+                  id="birthDoc" 
+                />
+                <label htmlFor="birthDoc" className="inline-block bg-slate-900 text-white text-xs px-5 py-2.5 rounded-xl font-bold cursor-pointer hover:bg-slate-800 transition">
+                  {birthFile ? `Selected: ${birthFile}` : 'Browse File'}
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Section 5: Security CAPTCHA */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 border-b pb-3 border-slate-200">
+              <span className="w-8 h-8 bg-orange-600 text-white rounded-xl flex items-center justify-center font-black text-sm shadow">
+                5
               </span>
               <div>
                 <h3 className="text-base font-black text-slate-900 uppercase">Security Verification</h3>
