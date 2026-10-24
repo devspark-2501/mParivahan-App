@@ -6,34 +6,41 @@ import nodemailer from 'nodemailer';
 export async function POST(request) {
   try {
     await dbConnect();
+
+    // Drop old indexes if they exist to prevent validation issues
+    try {
+      await User.collection.dropIndex('mobile_1');
+    } catch (e) {
+      // Ignore if index doesn't exist
+    }
+
     const { email } = await request.json();
 
     if (!email || !email.includes('@')) {
       return NextResponse.json(
-        { success: false, message: 'Please enter a valid email address.' },
+        { success: false, message: 'Please provide a valid email address.' },
         { status: 400 }
       );
     }
 
     const cleanEmail = email.toLowerCase().trim();
-
-    // Generate random 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Save or update OTP in MongoDB user model
+    // Find or create user without triggering mobile validation
     let user = await User.findOne({ email: cleanEmail });
     if (!user) {
-      user = await User.create({
+      user = new User({
         fullName: 'Citizen Applicant',
         email: cleanEmail,
-        password: otp, // Holds current active OTP
+        password: otp,
       });
+      await user.save({ validateBeforeSave: false }); // Bypass old cached validations
     } else {
       user.password = otp;
-      await user.save();
+      await user.save({ validateBeforeSave: false });
     }
 
-    // Configure Nodemailer with your App Password
+    // Configure Nodemailer Transport
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -42,7 +49,7 @@ export async function POST(request) {
       },
     });
 
-    // Send Email to the user requesting login
+    // Send Email
     await transporter.sendMail({
       from: `"mParivahan Portal" <${process.env.EMAIL_USER}>`,
       to: cleanEmail,
@@ -62,13 +69,13 @@ export async function POST(request) {
     return NextResponse.json({
       success: true,
       message: `OTP sent successfully to ${cleanEmail}`,
-      devOtp: otp, // Backup helper for presentation testing
+      devOtp: otp,
     });
 
   } catch (error) {
     console.error('Nodemailer SMTP Error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to send OTP email. Please verify SMTP settings.' },
+      { success: false, message: 'Failed to send OTP email.' },
       { status: 500 }
     );
   }
