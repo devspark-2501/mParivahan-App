@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import { ASSET_IMAGES } from '@/assets/assets';
 
 export default function LearnerLicensePage() {
-  const router = Router();
+  const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Check auth state on mount
