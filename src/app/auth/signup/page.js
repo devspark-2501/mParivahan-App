@@ -13,7 +13,7 @@ function SignupFormContent() {
 
   const [formData, setFormData] = useState({
     fullName: '',
-    mobile: '',
+    email: '',
     aadhaar: '',
     state: 'Delhi',
     password: ''
@@ -26,8 +26,8 @@ function SignupFormContent() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    if (formData.mobile.length !== 10) {
-      alert('Mobile number must be exactly 10 digits.');
+    if (!formData.email.includes('@')) {
+      alert('Please enter a valid email address.');
       return;
     }
     if (formData.aadhaar && formData.aadhaar.length !== 12) {
@@ -84,15 +84,14 @@ function SignupFormContent() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Mobile Number (10 Digit)</label>
+            <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Email Address</label>
             <input 
-              type="tel"
-              name="mobile"
+              type="email"
+              name="email"
               required 
-              maxLength={10}
-              placeholder="10-digit mobile"
-              value={formData.mobile}
-              onChange={(e) => setFormData({ ...formData, mobile: e.target.value.replace(/\D/g, '') })}
+              placeholder="e.g. citizen@example.com"
+              value={formData.email}
+              onChange={handleChange}
               className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
