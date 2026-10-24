@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 
 const slides = [
@@ -82,9 +83,11 @@ export default function HeroCarousel() {
           </p>
 
           <div className="pt-2 flex flex-wrap gap-4">
-            <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-7 py-3.5 rounded-md shadow-lg transition-transform active:scale-95">
-              Apply for Learner's Licence
-            </button>
+            <Link href="/apply-ll">
+                <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-7 py-3.5 rounded-md shadow-lg transition-transform active:scale-95">
+                Apply for Learner's Licence
+                </button>
+            </Link>
             <button className="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold text-sm px-7 py-3.5 rounded-md backdrop-blur-md transition-colors">
               Explore All Services
             </button>

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 
 const services = [
@@ -39,9 +40,11 @@ export default function QuickServices() {
           <p className="text-sm font-semibold tracking-wide text-center sm:text-left">
             Need help applying for your driving licence? Follow our simplified citizen roadmap.
           </p>
-          <button className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-5 py-2 rounded-md whitespace-nowrap transition-colors">
-            View Licensing Guide →
-          </button>
+            <Link href="/helpdesk">
+            <button className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-5 py-2 rounded-md whitespace-nowrap transition-colors">
+                View Licensing Guide →
+            </button>
+          </Link>
         </div>
 
         {/* Core Quick Services Grid */}
