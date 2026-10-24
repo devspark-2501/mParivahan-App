@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 
 export default function Header() {
   return (
@@ -31,8 +32,7 @@ export default function Header() {
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Emblem & Branding */}
-        <div className="flex items-center space-x-4">
-          {/* State Emblem (Lion Capital of Ashoka Vector) */}
+        <Link href="/" className="flex items-center space-x-4">
           <div className="flex-shrink-0">
             <svg className="w-10 h-12 text-slate-800" viewBox="0 0 100 120" fill="currentColor">
               <path d="M50 0 C45 10 40 15 30 20 C25 22 20 20 15 25 C10 30 15 40 20 45 C15 50 10 60 15 70 C20 80 30 80 35 75 C40 85 45 90 50 90 C55 90 60 85 65 75 C70 80 80 80 85 70 C90 60 85 50 80 45 C85 40 90 30 85 25 C80 20 75 22 70 20 C60 15 55 10 50 0 Z M50 95 L20 95 L20 102 L80 102 L80 95 Z M30 105 L70 105 L70 112 L30 112 Z" />
@@ -43,16 +43,16 @@ export default function Header() {
             <h1 className="text-2xl font-black tracking-tight text-slate-900 leading-none">mParivahan</h1>
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">National Citizen Transport Portal</p>
           </div>
-        </div>
+        </Link>
 
         {/* Links & Controls */}
         <div className="flex items-center space-x-6">
           <nav className="hidden lg:flex items-center space-x-8 text-sm font-semibold text-slate-700">
-            <a href="#" className="text-orange-600 hover:text-orange-700">Home</a>
-            <a href="#" className="hover:text-slate-900 transition-colors">DL Services</a>
-            <a href="#" className="hover:text-slate-900 transition-colors">Vehicle Services</a>
-            <a href="#" className="hover:text-slate-900 transition-colors">Mock Test</a>
-            <a href="#" className="hover:text-slate-900 transition-colors">Helpdesk</a>
+            <Link href="/" className="text-orange-600 hover:text-orange-700">Home</Link>
+            <Link href="/dl-services" className="hover:text-slate-900 transition-colors">DL Services</Link>
+            <Link href="/vehicle-services" className="hover:text-slate-900 transition-colors">Vehicle Services</Link>
+            <Link href="/mock-test" className="hover:text-slate-900 transition-colors">Mock Test</Link>
+            <Link href="/helpdesk" className="hover:text-slate-900 transition-colors">Helpdesk</Link>
           </nav>
 
           <div className="flex items-center space-x-3">
@@ -64,10 +64,13 @@ export default function Header() {
               <option value="ta">தமிழ்</option>
             </select>
 
-            {/* Login Pill Button */}
-            <button className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-sm transition-all hover:shadow-md">
+            {/* Login / Register Pill Button */}
+            <Link 
+              href="/auth/login" 
+              className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-sm transition-all hover:shadow-md inline-block"
+            >
               Login / Register
-            </button>
+            </Link>
           </div>
         </div>
       </div>
