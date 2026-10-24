@@ -10,28 +10,30 @@ export async function POST(request) {
 
     if (!email || !email.includes('@')) {
       return NextResponse.json(
-        { success: false, message: 'Please provide a valid email address.' },
+        { success: false, message: 'Please enter a valid email address.' },
         { status: 400 }
       );
     }
 
+    const cleanEmail = email.toLowerCase().trim();
+
     // Generate random 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Store or update OTP in MongoDB
-    let user = await User.findOne({ email: email.toLowerCase() });
+    // Save or update OTP in MongoDB user model
+    let user = await User.findOne({ email: cleanEmail });
     if (!user) {
       user = await User.create({
         fullName: 'Citizen Applicant',
-        email: email.toLowerCase(),
-        password: otp,
+        email: cleanEmail,
+        password: otp, // Holds current active OTP
       });
     } else {
       user.password = otp;
       await user.save();
     }
 
-    // Configure Nodemailer using your Gmail App Password credentials
+    // Configure Nodemailer with your App Password
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -40,33 +42,33 @@ export async function POST(request) {
       },
     });
 
-    // Send Email to the user who requested the OTP
+    // Send Email to the user requesting login
     await transporter.sendMail({
       from: `"mParivahan Portal" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: 'mParivahan Citizen Portal Verification Code',
+      to: cleanEmail,
+      subject: 'mParivahan Single Sign-On Verification Code',
       html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; color: #1e293b; max-width: 500px; border: 1px solid #e2e8f0; border-radius: 12px;">
-          <h2 style="color: #ea580c; margin-bottom: 8px;">mParivahan Single Sign-On</h2>
-          <p style="font-size: 14px; color: #64748b;">Your 6-digit verification code to sign into the portal is:</p>
-          <div style="background: #f8fafc; padding: 16px; text-align: center; font-size: 28px; font-weight: 900; letter-spacing: 6px; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 8px; margin: 16px 0;">
+        <div style="font-family: Arial, sans-serif; padding: 24px; color: #1e293b; max-width: 480px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
+          <h2 style="color: #ea580c; margin-top: 0;">mParivahan Identity Verification</h2>
+          <p style="font-size: 14px; color: #475569; line-height: 1.5;">Your 6-digit security code for official portal access is:</p>
+          <div style="background: #f8fafc; padding: 18px; text-align: center; font-size: 32px; font-weight: 900; letter-spacing: 6px; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 8px; margin: 20px 0;">
             ${otp}
           </div>
-          <p style="font-size: 12px; color: #94a3b8;">This code is valid for 10 minutes. Please do not share it with anyone.</p>
+          <p style="font-size: 12px; color: #94a3b8;">This code is valid for 10 minutes. Do not share this code with anyone.</p>
         </div>
       `,
     });
 
     return NextResponse.json({
       success: true,
-      message: `OTP successfully sent to ${email}`,
-      devOtp: otp, // For quick testing during presentation
+      message: `OTP sent successfully to ${cleanEmail}`,
+      devOtp: otp, // Backup helper for presentation testing
     });
 
   } catch (error) {
-    console.error('Nodemailer Send Error:', error);
+    console.error('Nodemailer SMTP Error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to send OTP email. Please check your SMTP settings.' },
+      { success: false, message: 'Failed to send OTP email. Please verify SMTP settings.' },
       { status: 500 }
     );
   }

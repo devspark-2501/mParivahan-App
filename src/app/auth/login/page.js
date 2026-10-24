@@ -10,13 +10,13 @@ function LoginFormContent() {
   const searchParams = useSearchParams();
   const redirectTarget = searchParams.get('redirect') || '/dl-services';
 
-  const [step, setStep] = useState(1); // Step 1: Email Input | Step 2: 6-Digit OTP Verification
+  const [step, setStep] = useState(1); // 1 = Email Input | 2 = OTP Verification
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [devHintOtp, setDevHintOtp] = useState('');
 
-  // Step 1: Send Email OTP
+  // Step 1: Request Email OTP
   const handleRequestOtp = async (e) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
@@ -39,20 +39,20 @@ function LoginFormContent() {
         setDevHintOtp(data.devOtp || '');
         setStep(2);
       } else {
-        alert(data.message || 'Failed to send OTP.');
+        alert(data.message || 'Failed to send verification email.');
       }
     } catch (err) {
-      alert('Network error while sending OTP.');
+      alert('Network error while requesting OTP.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Step 2: Verify OTP
+  // Step 2: Verify Email OTP
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     if (otp.length !== 6) {
-      alert('Please enter the complete 6-digit OTP code.');
+      alert('Please enter the full 6-digit code.');
       return;
     }
 
@@ -71,10 +71,10 @@ function LoginFormContent() {
         localStorage.setItem('isLoggedIn', 'true');
         router.push(redirectTarget);
       } else {
-        alert(data.message || 'Invalid OTP code.');
+        alert(data.message || 'Invalid code.');
       }
     } catch (err) {
-      alert('Verification process failed.');
+      alert('Verification failed.');
     } finally {
       setLoading(false);
     }
@@ -82,24 +82,21 @@ function LoginFormContent() {
 
   return (
     <div className="max-w-md mx-auto my-12 bg-white p-8 sm:p-10 rounded-2xl border border-slate-200 shadow-xl space-y-6">
-      
-      {/* Header Info */}
       <div className="text-center space-y-3">
         <span className="inline-block text-xs font-extrabold uppercase tracking-wider text-orange-700 bg-orange-50 px-3.5 py-1.5 rounded-full border border-orange-200 shadow-sm">
           mParivahan Single Sign-On
         </span>
         <h2 className="text-2xl font-black text-slate-900 tracking-tight pt-1">
-          {step === 1 ? 'Citizen Login via Email' : 'Enter 6-Digit Email OTP'}
+          {step === 1 ? 'Citizen Email Login' : 'Verify Email Code'}
         </h2>
         <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
           {step === 1 
-            ? 'Enter your registered email address to receive a secure verification code.'
-            : `We have sent a 6-digit verification code to ${email}`}
+            ? 'Enter your registered email address to receive a secure login code via Nodemailer.'
+            : `We have sent a 6-digit code to ${email}`}
         </p>
       </div>
 
       {step === 1 ? (
-        /* Step 1: Email Form */
         <form onSubmit={handleRequestOtp} className="space-y-5">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
@@ -120,11 +117,10 @@ function LoginFormContent() {
             disabled={loading}
             className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl text-sm shadow-md transition-all active:scale-95 disabled:opacity-50"
           >
-            {loading ? 'Sending Email OTP...' : 'Send Email OTP →'}
+            {loading ? 'Sending Email...' : 'Send Verification Code →'}
           </button>
         </form>
       ) : (
-        /* Step 2: OTP Verification Form */
         <form onSubmit={handleVerifyOtp} className="space-y-5">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
@@ -157,7 +153,7 @@ function LoginFormContent() {
                 onClick={() => setStep(1)} 
                 className="text-orange-600 font-bold hover:underline"
               >
-                ← Change Email Address
+                ← Change Email
               </button>
               <button 
                 type="button" 
@@ -174,12 +170,11 @@ function LoginFormContent() {
             disabled={loading}
             className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3.5 rounded-xl text-sm shadow-md transition-all active:scale-95 disabled:opacity-50"
           >
-            {loading ? 'Verifying Credentials...' : 'Verify & Sign In'}
+            {loading ? 'Verifying Code...' : 'Verify & Sign In'}
           </button>
         </form>
       )}
 
-      {/* Signup Redirection */}
       <div className="text-center pt-4 border-t border-slate-100">
         <p className="text-xs text-slate-600">
           Don't have an mParivahan account?{' '}
@@ -191,7 +186,6 @@ function LoginFormContent() {
           </Link>
         </p>
       </div>
-
     </div>
   );
 }

@@ -9,16 +9,17 @@ export async function POST(request) {
 
     if (!email || !otp || otp.length !== 6) {
       return NextResponse.json(
-        { success: false, message: 'Invalid email address or 6-digit OTP.' },
+        { success: false, message: 'Invalid request. Email and 6-digit OTP are required.' },
         { status: 400 }
       );
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const cleanEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: cleanEmail });
 
     if (!user || user.password !== otp) {
       return NextResponse.json(
-        { success: false, message: 'Incorrect OTP code. Please try again.' },
+        { success: false, message: 'Incorrect verification code. Please try again.' },
         { status: 401 }
       );
     }
@@ -43,9 +44,9 @@ export async function POST(request) {
     return response;
 
   } catch (error) {
-    console.error('Verify Email OTP Error:', error);
+    console.error('Verify OTP Error:', error);
     return NextResponse.json(
-      { success: false, message: 'Internal server error during verification.' },
+      { success: false, message: 'Server error while verifying code.' },
       { status: 500 }
     );
   }
