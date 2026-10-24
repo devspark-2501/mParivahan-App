@@ -10,17 +10,17 @@ function LoginFormContent() {
   const searchParams = useSearchParams();
   const redirectTarget = searchParams.get('redirect') || '/dl-services';
 
-  const [step, setStep] = useState(1); // Step 1: Mobile Input | Step 2: 6-Digit OTP Verification
-  const [mobile, setMobile] = useState('');
+  const [step, setStep] = useState(1); // Step 1: Email Input | Step 2: 6-Digit OTP Verification
+  const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [devHintOtp, setDevHintOtp] = useState('');
 
-  // Step 1: Request WhatsApp OTP
+  // Step 1: Send Email OTP
   const handleRequestOtp = async (e) => {
     e.preventDefault();
-    if (mobile.length !== 10) {
-      alert('Please enter a valid 10-digit mobile number.');
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address.');
       return;
     }
 
@@ -30,7 +30,7 @@ function LoginFormContent() {
       const res = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile }),
+        body: JSON.stringify({ email }),
       });
 
       const data = await res.json();
@@ -39,20 +39,20 @@ function LoginFormContent() {
         setDevHintOtp(data.devOtp || '');
         setStep(2);
       } else {
-        alert(data.message || 'Failed to send WhatsApp OTP.');
+        alert(data.message || 'Failed to send OTP.');
       }
     } catch (err) {
-      alert('Network error while requesting WhatsApp OTP.');
+      alert('Network error while sending OTP.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Step 2: Verify WhatsApp OTP & Authenticate
+  // Step 2: Verify OTP
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     if (otp.length !== 6) {
-      alert('Please enter the complete 6-digit verification code.');
+      alert('Please enter the complete 6-digit OTP code.');
       return;
     }
 
@@ -62,7 +62,7 @@ function LoginFormContent() {
       const res = await fetch('/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile, otp }),
+        body: JSON.stringify({ email, otp }),
       });
 
       const data = await res.json();
@@ -71,7 +71,7 @@ function LoginFormContent() {
         localStorage.setItem('isLoggedIn', 'true');
         router.push(redirectTarget);
       } else {
-        alert(data.message || 'Invalid OTP code. Please try again.');
+        alert(data.message || 'Invalid OTP code.');
       }
     } catch (err) {
       alert('Verification process failed.');
@@ -89,34 +89,30 @@ function LoginFormContent() {
           mParivahan Single Sign-On
         </span>
         <h2 className="text-2xl font-black text-slate-900 tracking-tight pt-1">
-          {step === 1 ? 'Citizen Login via WhatsApp' : 'Enter 6-Digit WhatsApp OTP'}
+          {step === 1 ? 'Citizen Login via Email' : 'Enter 6-Digit Email OTP'}
         </h2>
         <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
           {step === 1 
-            ? 'Enter your registered mobile number to receive an instant verification code on WhatsApp.'
-            : `We have sent a 6-digit security code via WhatsApp to +91 ${mobile}`}
+            ? 'Enter your registered email address to receive a secure verification code.'
+            : `We have sent a 6-digit verification code to ${email}`}
         </p>
       </div>
 
       {step === 1 ? (
-        /* Step 1: Request OTP Form */
+        /* Step 1: Email Form */
         <form onSubmit={handleRequestOtp} className="space-y-5">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
-              Registered Mobile Number
+              Email Address
             </label>
-            <div className="relative">
-              <span className="absolute left-4 top-3 text-sm font-bold text-slate-500">+91</span>
-              <input 
-                type="tel" 
-                required 
-                maxLength={10}
-                placeholder="Enter 10-digit number"
-                value={mobile}
-                onChange={(e) => setMobile(e.target.value.replace(/\D/g, ''))}
-                className="w-full pl-14 pr-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
-              />
-            </div>
+            <input 
+              type="email" 
+              required 
+              placeholder="e.g. citizen@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+            />
           </div>
 
           <button 
@@ -124,7 +120,7 @@ function LoginFormContent() {
             disabled={loading}
             className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl text-sm shadow-md transition-all active:scale-95 disabled:opacity-50"
           >
-            {loading ? 'Sending WhatsApp OTP...' : 'Send WhatsApp OTP →'}
+            {loading ? 'Sending Email OTP...' : 'Send Email OTP →'}
           </button>
         </form>
       ) : (
@@ -132,7 +128,7 @@ function LoginFormContent() {
         <form onSubmit={handleVerifyOtp} className="space-y-5">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
-              6-Digit Verification Code
+              6-Digit Security Code
             </label>
             <input 
               type="text" 
@@ -144,7 +140,6 @@ function LoginFormContent() {
               className="w-full text-center tracking-[0.5em] text-lg font-black px-4 py-3.5 rounded-xl border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-slate-50 transition-all"
             />
 
-            {/* Hackathon Demo Helper Box */}
             {devHintOtp && (
               <div className="mt-3 p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-center shadow-sm">
                 <p className="text-[11px] font-bold text-amber-900">
@@ -162,11 +157,11 @@ function LoginFormContent() {
                 onClick={() => setStep(1)} 
                 className="text-orange-600 font-bold hover:underline"
               >
-                ← Change Mobile Number
+                ← Change Email Address
               </button>
               <button 
                 type="button" 
-                onClick={() => alert(`Resent WhatsApp OTP: ${devHintOtp}`)} 
+                onClick={() => alert(`Resent Code: ${devHintOtp}`)} 
                 className="text-slate-500 font-semibold hover:text-slate-800 underline"
               >
                 Resend Code
@@ -184,7 +179,7 @@ function LoginFormContent() {
         </form>
       )}
 
-      {/* Signup Redirection Link */}
+      {/* Signup Redirection */}
       <div className="text-center pt-4 border-t border-slate-100">
         <p className="text-xs text-slate-600">
           Don't have an mParivahan account?{' '}
