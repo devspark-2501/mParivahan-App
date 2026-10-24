@@ -5,32 +5,30 @@ import User from '@/models/User';
 export async function POST(request) {
   try {
     await dbConnect();
-    const { mobile, otp } = await request.json();
+    const { email, otp } = await request.json();
 
-    if (!mobile || !otp || otp.length !== 6) {
+    if (!email || !otp || otp.length !== 6) {
       return NextResponse.json(
-        { success: false, message: 'Invalid mobile number or 6-digit OTP.' },
+        { success: false, message: 'Invalid email address or 6-digit OTP.' },
         { status: 400 }
       );
     }
 
-    // Find user and match OTP
-    const user = await User.findOne({ mobile });
+    const user = await User.findOne({ email: email.toLowerCase() });
 
     if (!user || user.password !== otp) {
       return NextResponse.json(
-        { success: false, message: 'Incorrect OTP. Please try again.' },
+        { success: false, message: 'Incorrect OTP code. Please try again.' },
         { status: 401 }
       );
     }
 
-    // Authentication successful, generate secure session cookie
     const response = NextResponse.json({
       success: true,
-      message: 'Citizen authenticated and signed in successfully.',
+      message: 'Citizen authenticated successfully.',
       user: {
         id: user._id,
-        mobile: user.mobile,
+        email: user.email,
         fullName: user.fullName,
       },
     });
@@ -38,13 +36,14 @@ export async function POST(request) {
     response.cookies.set('authToken', user._id.toString(), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24, // 1 day session
+      maxAge: 60 * 60 * 24,
       path: '/',
     });
 
     return response;
+
   } catch (error) {
-    console.error('Verify OTP Error:', error);
+    console.error('Verify Email OTP Error:', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error during verification.' },
       { status: 500 }
