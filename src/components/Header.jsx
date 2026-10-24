@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function Header() {
   return (
     <header className="w-full bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm font-sans">
-      {/* Top Government Utility Bar */}
+      {/* Top Utility Bar */}
       <div className="bg-slate-900 text-slate-300 text-xs py-2 px-4 sm:px-8 flex justify-between items-center border-b border-slate-800">
         <div className="flex items-center space-x-6">
           <span className="flex items-center gap-1.5 font-medium">
@@ -29,49 +29,35 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main Navigation Bar */}
+      {/* Main Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        {/* Emblem & Branding */}
-        <Link href="/" className="flex items-center space-x-4">
+        <Link href="/" className="flex items-center space-x-3">
           <div className="flex-shrink-0">
-            <svg className="w-10 h-12 text-slate-800" viewBox="0 0 100 120" fill="currentColor">
+            <svg className="w-9 h-11 text-slate-800" viewBox="0 0 100 120" fill="currentColor">
               <path d="M50 0 C45 10 40 15 30 20 C25 22 20 20 15 25 C10 30 15 40 20 45 C15 50 10 60 15 70 C20 80 30 80 35 75 C40 85 45 90 50 90 C55 90 60 85 65 75 C70 80 80 80 85 70 C90 60 85 50 80 45 C85 40 90 30 85 25 C80 20 75 22 70 20 C60 15 55 10 50 0 Z M50 95 L20 95 L20 102 L80 102 L80 95 Z M30 105 L70 105 L70 112 L30 112 Z" />
               <circle cx="50" cy="55" r="10" fill="none" stroke="currentColor" strokeWidth="3" />
             </svg>
           </div>
-          <div className="border-l border-slate-300 pl-4">
+          <div className="border-l border-slate-300 pl-3">
             <h1 className="text-2xl font-black tracking-tight text-slate-900 leading-none">mParivahan</h1>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">National Citizen Transport Portal</p>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-1">National Citizen Transport Portal</p>
           </div>
         </Link>
 
-        {/* Links & Controls */}
-        <div className="flex items-center space-x-6">
-          <nav className="hidden lg:flex items-center space-x-8 text-sm font-semibold text-slate-700">
-            <Link href="/" className="text-orange-600 hover:text-orange-700">Home</Link>
-            <Link href="/dl-services" className="hover:text-slate-900 transition-colors">DL Services</Link>
-            <Link href="/vehicle-services" className="hover:text-slate-900 transition-colors">Vehicle Services</Link>
-            <Link href="/mock-test" className="hover:text-slate-900 transition-colors">Mock Test</Link>
-            <Link href="/helpdesk" className="hover:text-slate-900 transition-colors">Helpdesk</Link>
+        {/* Licence Navigation Links */}
+        <div className="flex items-center space-x-4">
+          <nav className="hidden lg:flex items-center space-x-3">
+            <Link href="/apply-ll" className="bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 text-xs font-bold px-3.5 py-2 rounded-full transition-all">
+              📜 Learning Licence
+            </Link>
+            <Link href="/dl-services" className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold px-3.5 py-2 rounded-full transition-all">
+              🪪 Driving Licence
+            </Link>
           </nav>
 
-          <div className="flex items-center space-x-3">
-            {/* Language Selector */}
-            <select className="bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
-              <option value="en">English</option>
-              <option value="hi">हिन्दी (Hindi)</option>
-              <option value="bn">বাংলা</option>
-              <option value="ta">தமிழ்</option>
-            </select>
-
-            {/* Login / Register Pill Button */}
-            <Link 
-              href="/auth/login" 
-              className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-sm transition-all hover:shadow-md inline-block"
-            >
-              Login / Register
-            </Link>
-          </div>
+          <Link href="/auth/login" className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-sm transition-all">
+            Login / Register
+          </Link>
         </div>
       </div>
     </header>
