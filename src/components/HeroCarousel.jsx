@@ -26,7 +26,7 @@ export default function HeroCarousel() {
   const currentSlideText = t.slides[active] || t.slides[0];
 
   return (
-    <section className="relative w-full h-[540px] bg-slate-900 overflow-hidden">
+    <section className="relative w-full h-[480px] sm:h-[540px] bg-slate-900 overflow-hidden">
       {/* Background Slides */}
       {slideImages.map((imgSrc, index) => (
         <div
@@ -40,33 +40,33 @@ export default function HeroCarousel() {
             alt="Hero Background"
             className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/70 to-transparent" />
         </div>
       ))}
 
       {/* Hero Content Block */}
-      <div className="relative max-w-7xl mx-auto h-full px-6 lg:px-8 flex items-center z-10">
-        <div className="max-w-2xl text-white space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-orange-600/90 text-white rounded-md text-xs font-bold tracking-wide uppercase backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-            {currentSlideText.subtitle}
+      <div className="relative max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-center z-10">
+        <div className="max-w-2xl text-white space-y-4 sm:space-y-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-orange-600/90 text-white rounded-md text-[11px] sm:text-xs font-bold tracking-wide uppercase backdrop-blur-sm">
+            <span className="w-2 h-2 rounded-full bg-white animate-pulse shrink-0" />
+            <span className="truncate">{currentSlideText.subtitle}</span>
           </div>
 
-          <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight text-white drop-shadow-md">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-white drop-shadow-md">
             {currentSlideText.title}
           </h2>
 
-          <p className="text-base sm:text-lg text-slate-200 font-medium leading-relaxed drop-shadow">
+          <p className="text-sm sm:text-base md:text-lg text-slate-200 font-medium leading-relaxed drop-shadow">
             {currentSlideText.desc}
           </p>
 
-          <div className="pt-2 flex flex-wrap gap-4">
+          <div className="pt-2 flex flex-wrap gap-3 sm:gap-4">
             <Link href="/apply-ll">
-              <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-7 py-3.5 rounded-md shadow-lg transition-transform active:scale-95">
+              <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-sm px-5 sm:px-7 py-3 sm:py-3.5 rounded-md shadow-lg transition-transform active:scale-95 whitespace-nowrap">
                 {t.applyBtn}
               </button>
             </Link>
-            <button className="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold text-sm px-7 py-3.5 rounded-md backdrop-blur-md transition-colors">
+            <button className="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold text-xs sm:text-sm px-5 sm:px-7 py-3 sm:py-3.5 rounded-md backdrop-blur-md transition-colors whitespace-nowrap">
               {t.exploreBtn}
             </button>
           </div>

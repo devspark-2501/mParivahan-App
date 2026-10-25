@@ -10,20 +10,20 @@ export default function Footer() {
   return (
     <footer className="bg-slate-950 text-slate-400 font-sans border-t border-slate-800 mt-auto">
       {/* Top Disclaimer / Info Strip */}
-      <div className="bg-slate-900 border-b border-slate-800 py-4 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
-          <div className="flex items-center gap-2 text-slate-300">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      <div className="bg-slate-900 border-b border-slate-800 py-3 sm:py-4 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-2 text-slate-300 flex-wrap">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
             <span>{t.mparivahanPortal}</span>
           </div>
-          <div className="text-slate-400 font-medium">
+          <div className="text-slate-400 font-medium whitespace-nowrap">
             <span>{t.helpline}</span>
           </div>
         </div>
       </div>
 
       {/* Main Footer Links */}
-      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8 text-xs">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-xs">
         
         {/* Col 1: About */}
         <div className="space-y-4">
@@ -95,10 +95,10 @@ export default function Footer() {
       </div>
 
       {/* Bottom Copyright Strip */}
-      <div className="bg-black py-6 px-4 border-t border-slate-900 text-center text-slate-500 text-[11px]">
+      <div className="bg-black py-6 px-4 sm:px-6 lg:px-8 border-t border-slate-900 text-center text-slate-500 text-[11px]">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
           <p>{t.copyright}</p>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
             <span className="hover:underline cursor-pointer">{t.privacy}</span>
             <span>•</span>
             <span className="hover:underline cursor-pointer">{t.terms}</span>
