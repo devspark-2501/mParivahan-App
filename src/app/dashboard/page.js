@@ -9,20 +9,80 @@ export default function UserDashboardPage() {
   const [downloading, setDownloading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
 
-  // Handles fetching /card (or /card.pdf) from public folder & triggering browser download
   const handleDownloadAndEmail = async () => {
     setDownloading(true);
 
     try {
-      // 1. Trigger client-side file download from public folder (/card)
+      // 1. Generate the official licence certificate content dynamically
+      const certificateHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Learner's Licence - mParivahan</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; background: #f8fafc; }
+            .card { max-width: 700px; margin: 0 auto; background: #ffffff; border: 4px solid #0f172a; border-radius: 16px; padding: 32px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+            .header { text-align: center; border-bottom: 2px solid #cbd5e1; padding-bottom: 20px; margin-bottom: 20px; }
+            .title { font-size: 22px; font-weight: 900; color: #0f172a; text-transform: uppercase; }
+            .subtitle { font-size: 12px; font-weight: 700; color: #ea580c; margin-top: 4px; }
+            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 13px; margin-bottom: 24px; }
+            .label { font-weight: bold; color: #64748b; text-transform: uppercase; font-size: 10px; }
+            .value { font-weight: 800; color: #0f172a; margin-top: 2px; }
+            .footer { text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 20px; }
+          </style>
+        </head>
+        <body>
+          <div class="card">
+            <div class="header">
+              <div class="title">Ministry of Road Transport & Highways</div>
+              <div class="subtitle">GOVERNMENT OF INDIA • FORM 3 LEARNER'S LICENCE</div>
+            </div>
+            <div class="grid">
+              <div>
+                <div class="label">Application Reference</div>
+                <div class="value">LL-98421033</div>
+              </div>
+              <div>
+                <div class="label">Licence Status</div>
+                <div class="value" style="color: #16a34a;">APPROVED & VERIFIED ✓</div>
+              </div>
+              <div>
+                <div class="label">Test Score</div>
+                <div class="value">10 / 10 (Passed)</div>
+              </div>
+              <div>
+                <div class="label">Validity Period</div>
+                <div class="value">6 Months</div>
+              </div>
+              <div>
+                <div class="label">Jurisdiction RTO</div>
+                <div class="value">RTO Delhi Central (DL-01)</div>
+              </div>
+              <div>
+                <div class="label">Authorized Class</div>
+                <div class="value">MCWOG / LMV</div>
+              </div>
+            </div>
+            <div class="footer">
+              <p>This is a digitally verified electronic licence document generated via mParivahan portal and integrated with DigiLocker.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+
+      // 2. Create an instant blob download for the user
+      const blob = new Blob([certificateHTML], { type: 'text/html' });
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href = '/card'; // Direct path to public/card file
-      link.setAttribute('download', 'Learners_Licence_LL-98421033.pdf');
+      link.href = url;
+      link.setAttribute('download', 'Learners_Licence_LL-98421033.html');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
 
-      // 2. Trigger email dispatch API to send email copy to the user
+      // 3. Trigger Nodemailer email dispatch API
       const userSession = localStorage.getItem('mparivahan_user');
       const userEmail = userSession ? JSON.parse(userSession).email : 'applicant@mparivahan.gov.in';
 
@@ -98,7 +158,7 @@ export default function UserDashboardPage() {
               disabled={downloading}
               className="w-full bg-slate-900 text-white py-3 rounded-xl text-xs font-bold hover:bg-slate-800 transition active:scale-95 disabled:opacity-50"
             >
-              {downloading ? 'Fetching Digital Licence...' : 'Download Digital Licence (PDF)'}
+              {downloading ? 'Generating Digital Licence...' : 'Download Digital Licence Certificate'}
             </button>
           </div>
 
