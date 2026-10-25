@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -33,8 +33,23 @@ export default function ApplyLLPage() {
   const [captchaCode, setCaptchaCode] = useState('7K9M2P');
   const [submitted, setSubmitted] = useState(false);
   const [applicationNo, setApplicationNo] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loadingAuth, setLoadingAuth] = useState(true);
 
-  // Calculate age dynamically from DOB and update age-gated choices
+  // Check if user is logged in on mount
+  useEffect(() => {
+    // Check localStorage or cookies for active session token or user email
+    const userSession = localStorage.getItem('mparivahan_user') || sessionStorage.getItem('mparivahan_token');
+    
+    if (!userSession) {
+      // Not logged in -> Redirect to login with return URL
+      router.push('/auth/login?redirect=/apply-ll');
+    } else {
+      setIsAuthenticated(true);
+    }
+    setLoadingAuth(false);
+  }, [router]);
+
   const handleDobChange = (e) => {
     const dobValue = e.target.value;
     if (!dobValue) return;
@@ -64,6 +79,14 @@ export default function ApplyLLPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Double check authentication before allowing form submission
+    const userSession = localStorage.getItem('mparivahan_user') || sessionStorage.getItem('mparivahan_token');
+    if (!userSession) {
+      alert('Authentication required! Please log in to submit your application.');
+      router.push('/auth/login?redirect=/apply-ll');
+      return;
+    }
+
     if (formData.age < 16) {
       alert("Minimum age requirement for a Learner's Licence in India is 16 years.");
       return;
@@ -78,6 +101,19 @@ export default function ApplyLLPage() {
     setApplicationNo(generatedAppNo);
     setSubmitted(true);
   };
+
+  if (loadingAuth) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white font-sans">
+        <div className="text-center space-y-3">
+          <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-xs text-slate-400 font-bold tracking-widest uppercase">Verifying Government Portal Session...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) return null;
 
   return (
     <div className="min-h-screen bg-slate-100 font-sans text-slate-900 flex flex-col">
@@ -116,7 +152,7 @@ export default function ApplyLLPage() {
                   FORM 2 • MV ACT 1988
                 </span>
                 <span className="text-xs text-slate-300 font-semibold bg-white/10 px-3 py-1 rounded-full backdrop-blur-md">
-                  e-Governance Citizen Services
+                  Secure SSO Authenticated Session
                 </span>
               </div>
 
