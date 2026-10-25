@@ -1,7 +1,12 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-slate-950 text-slate-400 font-sans border-t border-slate-800 mt-auto">
       {/* Top Disclaimer / Info Strip */}
@@ -9,10 +14,10 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
           <div className="flex items-center gap-2 text-slate-300">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>mParivahan Services Portal • Ministry of Road Transport and Highways (MoRTH), Government of India</span>
+            <span>{t.mparivahanPortal}</span>
           </div>
           <div className="text-slate-400 font-medium">
-            <span>Helpline: 1800-123-4567 (Toll-Free)</span>
+            <span>{t.helpline}</span>
           </div>
         </div>
       </div>
@@ -23,30 +28,30 @@ export default function Footer() {
         {/* Col 1: About */}
         <div className="space-y-4">
           <h4 className="text-white font-black uppercase tracking-wider text-sm border-l-2 border-orange-500 pl-3">
-            About mParivahan
+            {t.aboutTitle}
           </h4>
           <p className="leading-relaxed text-slate-400">
-            Digital citizen-centric application platform providing instant access to transport related services, driving licences, vehicle registration, and RTO screening tests.
+            {t.aboutDesc}
           </p>
         </div>
 
         {/* Col 2: Quick Links */}
         <div className="space-y-3">
           <h4 className="text-white font-black uppercase tracking-wider text-sm border-l-2 border-orange-500 pl-3">
-            Portal Services
+            {t.servicesTitle}
           </h4>
           <ul className="space-y-2">
             <li>
-              <Link href="/apply-ll" className="hover:text-orange-400 transition">Apply for Learner's Licence</Link>
+              <Link href="/apply-ll" className="hover:text-orange-400 transition">{t.applyBtn}</Link>
             </li>
             <li>
-              <Link href="/admission-test" className="hover:text-orange-400 transition">RTO Online Screening Test</Link>
+              <Link href="/admission-test" className="hover:text-orange-400 transition">{t.rtoTestLink}</Link>
             </li>
             <li>
-              <Link href="/dashboard" className="hover:text-orange-400 transition">Citizen User Dashboard</Link>
+              <Link href="/dashboard" className="hover:text-orange-400 transition">{t.dashboardLink}</Link>
             </li>
             <li>
-              <Link href="/auth/login" className="hover:text-orange-400 transition">Secure Email SSO Login</Link>
+              <Link href="/auth/login" className="hover:text-orange-400 transition">{t.ssoLoginLink}</Link>
             </li>
           </ul>
         </div>
@@ -54,20 +59,20 @@ export default function Footer() {
         {/* Col 3: Government Links */}
         <div className="space-y-3">
           <h4 className="text-white font-black uppercase tracking-wider text-sm border-l-2 border-orange-500 pl-3">
-            Important Portals
+            {t.portalsTitle}
           </h4>
           <ul className="space-y-2">
             <li>
-              <a href="https://mparivahan.parivahan.gov.in" target="_blank" rel="noreferrer" className="hover:text-orange-400 transition">MoRTH Official Website</a>
+              <a href="https://mparivahan.parivahan.gov.in" target="_blank" rel="noreferrer" className="hover:text-orange-400 transition">{t.morthLink}</a>
             </li>
             <li>
-              <a href="https://sarathi.parivahan.gov.in" target="_blank" rel="noreferrer" className="hover:text-orange-400 transition">Sarathi Parivahan Sewa</a>
+              <a href="https://sarathi.parivahan.gov.in" target="_blank" rel="noreferrer" className="hover:text-orange-400 transition">{t.sarathiLink}</a>
             </li>
             <li>
-              <a href="https://vahan.parivahan.gov.in" target="_blank" rel="noreferrer" className="hover:text-orange-400 transition">Vahan Vehicle Registration</a>
+              <a href="https://vahan.parivahan.gov.in" target="_blank" rel="noreferrer" className="hover:text-orange-400 transition">{t.vahanLink}</a>
             </li>
             <li>
-              <a href="https://www.digitalindia.gov.in" target="_blank" rel="noreferrer" className="hover:text-orange-400 transition">Digital India Initiative</a>
+              <a href="https://www.digitalindia.gov.in" target="_blank" rel="noreferrer" className="hover:text-orange-400 transition">{t.digitalIndiaLink}</a>
             </li>
           </ul>
         </div>
@@ -75,14 +80,14 @@ export default function Footer() {
         {/* Col 4: Hackathon Notice */}
         <div className="space-y-3">
           <h4 className="text-white font-black uppercase tracking-wider text-sm border-l-2 border-orange-500 pl-3">
-            Hackathon Project
+            {t.hackathonTitle}
           </h4>
           <p className="leading-relaxed text-slate-400">
-            Built with Next.js, MongoDB Mongoose, and Nodemailer email authentication for high-performance government-grade reliability.
+            {t.hackathonDesc}
           </p>
           <div className="pt-2">
             <span className="inline-block bg-orange-500/10 border border-orange-500/30 text-orange-400 font-mono text-[10px] px-2.5 py-1 rounded-full font-bold">
-              Hackathon Edition 2026
+              {t.hackathonTag}
             </span>
           </div>
         </div>
@@ -92,13 +97,13 @@ export default function Footer() {
       {/* Bottom Copyright Strip */}
       <div className="bg-black py-6 px-4 border-t border-slate-900 text-center text-slate-500 text-[11px]">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p>© 2026 Ministry of Road Transport and Highways, Government of India. All Rights Reserved.</p>
+          <p>{t.copyright}</p>
           <div className="flex gap-4">
-            <span className="hover:underline cursor-pointer">Privacy Policy</span>
+            <span className="hover:underline cursor-pointer">{t.privacy}</span>
             <span>•</span>
-            <span className="hover:underline cursor-pointer">Terms of Service</span>
+            <span className="hover:underline cursor-pointer">{t.terms}</span>
             <span>•</span>
-            <span className="hover:underline cursor-pointer">Hyperlinking Policy</span>
+            <span className="hover:underline cursor-pointer">{t.hyperlinkPolicy}</span>
           </div>
         </div>
       </div>
