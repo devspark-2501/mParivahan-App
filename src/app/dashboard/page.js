@@ -1,11 +1,50 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 
 export default function UserDashboardPage() {
+  const [downloading, setDownloading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+
+  // Handles fetching /card (or /card.pdf) from public folder & triggering browser download
+  const handleDownloadAndEmail = async () => {
+    setDownloading(true);
+
+    try {
+      // 1. Trigger client-side file download from public folder (/card)
+      const link = document.createElement('a');
+      link.href = '/card'; // Direct path to public/card file
+      link.setAttribute('download', 'Learners_Licence_LL-98421033.pdf');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // 2. Trigger email dispatch API to send email copy to the user
+      const userSession = localStorage.getItem('mparivahan_user');
+      const userEmail = userSession ? JSON.parse(userSession).email : 'applicant@mparivahan.gov.in';
+
+      const response = await fetch('/api/send-licence-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: userEmail,
+          applicationNo: 'LL-98421033',
+        }),
+      });
+
+      if (response.ok) {
+        setEmailSent(true);
+      }
+    } catch (error) {
+      console.error('Error downloading licence file:', error);
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-100 font-sans text-slate-900 flex flex-col">
       <Header />
@@ -37,6 +76,11 @@ export default function UserDashboardPage() {
             <p className="text-xs text-emerald-800 leading-relaxed">
               Your Learner's Licence approval and digital document copy have been successfully dispatched to your registered email address via Nodemailer. You can also download your digital DL certificate below.
             </p>
+            {emailSent && (
+              <p className="text-[11px] text-emerald-700 font-bold pt-1">
+                ✓ Confirmation email triggered to your inbox!
+              </p>
+            )}
           </div>
         </div>
 
@@ -50,10 +94,11 @@ export default function UserDashboardPage() {
               <p><strong>Validity:</strong> 6 Months (Learner's Licence)</p>
             </div>
             <button 
-              onClick={() => alert('Downloading official digital licence PDF...')}
-              className="w-full bg-slate-900 text-white py-3 rounded-xl text-xs font-bold hover:bg-slate-800 transition"
+              onClick={handleDownloadAndEmail}
+              disabled={downloading}
+              className="w-full bg-slate-900 text-white py-3 rounded-xl text-xs font-bold hover:bg-slate-800 transition active:scale-95 disabled:opacity-50"
             >
-              Download Digital Licence (PDF)
+              {downloading ? 'Fetching Digital Licence...' : 'Download Digital Licence (PDF)'}
             </button>
           </div>
 

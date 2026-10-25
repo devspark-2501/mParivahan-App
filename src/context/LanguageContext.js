@@ -49,6 +49,41 @@ const translations = {
     applyBtn: "Apply for Learner's Licence",
     exploreBtn: "Explore All Services",
 
+    // Quick Services & Banner
+    quickServicesBanner: "Need help applying for your driving licence? Follow our simplified citizen roadmap.",
+    viewGuideBtn: "View Licensing Guide →",
+    accessPortal: "Access Portal",
+    servicesList: [
+      {
+        title: "Learner's Licence (LL)",
+        desc: "Apply online, upload documents, and attempt the learner test digitally.",
+        badge: "Step 1",
+        accent: "bg-orange-500",
+        route: "/apply-ll"
+      },
+      {
+        title: "Practice Road Rules",
+        desc: "Interactive mock quizzes covering traffic signs, signals, and road safety.",
+        badge: "Prep",
+        accent: "bg-blue-600",
+        route: "/road-rules"
+      },
+      {
+        title: "Driving Test Slot",
+        desc: "Schedule your practical driving test at your nearest RTO office.",
+        badge: "Step 2",
+        accent: "bg-slate-800",
+        route: "/driving-slot"
+      },
+      {
+        title: "Track Application",
+        desc: "Check real-time status of your driving licence application and dispatch.",
+        badge: "Status",
+        accent: "bg-emerald-600",
+        route: "/dashboard"
+      }
+    ],
+
     // Footer
     mparivahanPortal: "mParivahan Services Portal • Ministry of Road Transport and Highways (MoRTH), Government of India",
     helpline: "Helpline: 1800-123-4567 (Toll-Free)",
@@ -117,6 +152,41 @@ const translations = {
     ],
     applyBtn: "लर्नर लाइसेंस के लिए आवेदन करें",
     exploreBtn: "सभी सेवाएं देखें",
+
+    // Quick Services & Banner
+    quickServicesBanner: "ड्राइविंग लाइसेंस के लिए आवेदन करने में सहायता चाहिए? हमारे सरल नागरिक रोडमैप का पालन करें।",
+    viewGuideBtn: "लाइसेंसिंग गाइड देखें →",
+    accessPortal: "पोर्टल एक्सेस करें",
+    servicesList: [
+      {
+        title: "लर्नर लाइसेंस (LL)",
+        desc: "ऑनलाइन आवेदन करें, दस्तावेज अपलोड करें, और डिजिटल रूप से शिक्षार्थी परीक्षा दें।",
+        badge: "चरण 1",
+        accent: "bg-orange-500",
+        route: "/apply-ll"
+      },
+      {
+        title: "सड़क नियमों का अभ्यास",
+        desc: "यातायात संकेतों, सिग्नलों और सड़क सुरक्षा को कवर करने वाले इंटरैक्टिव मॉक क्विज़।",
+        badge: "तैयारी",
+        accent: "bg-blue-600",
+        route: "/road-rules"
+      },
+      {
+        title: "ड्राइविंग टेस्ट स्लॉट",
+        desc: "अपने निकटतम आरटीओ कार्यालय में अपनी व्यावहारिक ड्राइविंग परीक्षा निर्धारित करें।",
+        badge: "चरण 2",
+        accent: "bg-slate-800",
+        route: "/driving-slot"
+      },
+      {
+        title: "आवेदन ट्रैक करें",
+        desc: "अपने ड्राइविंग लाइसेंस आवेदन और प्रेषण की वास्तविक समय की स्थिति जांचें।",
+        badge: "स्थिति",
+        accent: "bg-emerald-600",
+        route: "/dashboard"
+      }
+    ],
 
     // Footer
     mparivahanPortal: "एमपरिवहन सेवा पोर्टल • सड़क परिवहन और राजमार्ग मंत्रालय (MoRTH), भारत सरकार",
