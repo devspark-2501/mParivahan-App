@@ -45,11 +45,11 @@ export default function VehicleServicesPage() {
   const [searchResult, setSearchResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Auto-sliding effect every 4 seconds
+  // Auto-sliding effect every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % sliderImages.length);
-    }, 4000);
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
@@ -82,26 +82,26 @@ export default function VehicleServicesPage() {
     <div className="min-h-screen bg-slate-100 font-sans text-slate-900 flex flex-col">
       <Header />
 
-      {/* Top Government Strip */}
-      <div className="bg-slate-900 text-slate-300 text-xs py-2 px-4 sm:px-8 border-b border-slate-800">
+      {/* Top Government Utility Bar */}
+      <div className="bg-slate-900 text-slate-300 text-xs py-2 px-6 sm:px-12 border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center gap-3">
-            <img src={INDIAN_GOVT_ASSETS.emblemOfIndia} alt="State Emblem" className="h-5 w-auto filter invert" />
+            <img src={INDIAN_GOVT_ASSETS.emblemOfIndia} alt="State Emblem" className="h-5 w-auto filter invert brightness-200" />
             <span className="font-bold text-white">Vahan 4.0 Central Vehicle Registry</span>
             <span className="hidden sm:inline text-slate-500">|</span>
             <span className="hidden sm:inline text-slate-400">MoRTH Government of India Initiative</span>
           </div>
-          <div className="flex items-center gap-3 text-[11px] font-semibold text-amber-400">
-            <span>High Security Registration Plate (HSRP) Compliant</span>
+          <div className="flex items-center gap-2 text-[11px] font-bold text-amber-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">
+            <span>● High Security Registration Plate (HSRP) Compliant</span>
           </div>
         </div>
       </div>
 
-      <main className="flex-grow space-y-12 pb-16">
+      <main className="flex-grow space-y-12 pb-20">
         
         {/* HERO CAROUSEL SECTION */}
-        <section className="relative w-full h-[520px] bg-slate-950 text-white overflow-hidden shadow-2xl">
-          {/* Background Images with Automatic Fade Transition */}
+        <section className="relative w-full min-h-[580px] bg-slate-950 text-white overflow-hidden shadow-2xl flex items-center">
+          {/* Background Images with Heavy Dark Gradient Overlay for Supreme Text Contrast */}
           {sliderImages.map((slide, idx) => (
             <div
               key={idx}
@@ -112,45 +112,45 @@ export default function VehicleServicesPage() {
               <img
                 src={slide.url}
                 alt={slide.caption}
-                className="w-full h-full object-cover opacity-35"
+                className="w-full h-full object-cover opacity-30"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/90 to-slate-950/40" />
             </div>
           ))}
 
-          {/* Hero Content Overlay */}
-          <div className="relative max-w-7xl mx-auto h-full px-6 lg:px-8 flex flex-col justify-center space-y-6 z-10">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-orange-600/90 text-white rounded-full text-xs font-black tracking-wider uppercase backdrop-blur-md w-fit shadow-lg">
-              <span className="w-2.5 h-2.5 rounded-full bg-white animate-ping" />
+          {/* Hero Content Block */}
+          <div className="relative max-w-7xl w-full mx-auto px-6 sm:px-12 py-16 flex flex-col justify-center space-y-6 z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-orange-600 text-white rounded-full text-xs font-black tracking-wider uppercase shadow-xl w-fit">
+              <span className="w-2.5 h-2.5 rounded-full bg-white animate-pulse" />
               {t.vahanBadge || "● VAHAN 4.0 NATIONAL REGISTRY INTEGRATION"}
             </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white max-w-3xl drop-shadow-lg">
+            <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight text-white max-w-3xl">
               {t.vehicleServicesHeroTitle || "National Vehicle Registration & Vahan Services"}
             </h1>
 
-            <p className="text-xs sm:text-base text-slate-300 max-w-2xl leading-relaxed font-medium">
+            <p className="text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed font-medium">
               {t.vehicleServicesHeroSubtitle || "Official digital gateway for Vehicle Registration (RC), Fitness Certificates, Ownership Transfer, Hypothecation Cancellation, and National Permit validation powered by Vahan 4.0."}
             </p>
 
-            {/* Carousel Subtitle Caption Card */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-2xl max-w-lg space-y-1">
-              <p className="text-xs font-black text-orange-400 uppercase tracking-wide">
-                Currently Displaying: {sliderImages[currentSlide].caption}
+            {/* Active Slide Info Box */}
+            <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/80 p-4 rounded-2xl max-w-md space-y-1 shadow-xl">
+              <p className="text-[11px] font-black text-orange-400 uppercase tracking-widest">
+                Featured Infrastructure: {sliderImages[currentSlide].caption}
               </p>
-              <p className="text-[11px] text-slate-300">
+              <p className="text-xs text-slate-300 font-medium">
                 {sliderImages[currentSlide].sub}
               </p>
             </div>
 
-            {/* Slider Dots Indicator */}
+            {/* Slide Dots */}
             <div className="flex items-center gap-2 pt-2">
               {sliderImages.map((_, dotIdx) => (
                 <button
                   key={dotIdx}
                   onClick={() => setCurrentSlide(dotIdx)}
-                  className={`h-2.5 rounded-full transition-all ${
-                    dotIdx === currentSlide ? 'w-8 bg-orange-500' : 'w-2.5 bg-white/40 hover:bg-white/60'
+                  className={`h-2 rounded-full transition-all ${
+                    dotIdx === currentSlide ? 'w-10 bg-orange-500' : 'w-2.5 bg-white/30 hover:bg-white/50'
                   }`}
                 />
               ))}
@@ -158,8 +158,8 @@ export default function VehicleServicesPage() {
           </div>
         </section>
 
-        {/* SECTION 2: LIVE RC SEARCH & STATUS LOOKUP WIDGET */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
+        {/* WIDGET SECTION: REAL-TIME RC VERIFICATION */}
+        <section className="max-w-7xl mx-auto px-6 sm:px-12 -mt-20 relative z-30">
           <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-2xl space-y-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b pb-4 border-slate-200 gap-4">
               <div>
@@ -171,20 +171,20 @@ export default function VehicleServicesPage() {
                 </h2>
               </div>
 
-              {/* Tab Selector */}
-              <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200 text-xs font-bold">
+              {/* Tabs */}
+              <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 text-xs font-bold">
                 <button
                   onClick={() => setActiveTab('rcStatus')}
-                  className={`px-4 py-2 rounded-xl transition ${
-                    activeTab === 'rcStatus' ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                  className={`px-5 py-2.5 rounded-xl transition ${
+                    activeTab === 'rcStatus' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   Verify RC Status
                 </button>
                 <button
                   onClick={() => setActiveTab('roadTax')}
-                  className={`px-4 py-2 rounded-xl transition ${
-                    activeTab === 'roadTax' ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                  className={`px-5 py-2.5 rounded-xl transition ${
+                    activeTab === 'roadTax' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   Road Tax Calculator
@@ -246,11 +246,11 @@ export default function VehicleServicesPage() {
                 <h3 className="text-sm font-black text-slate-900 uppercase">State Motor Vehicle Tax Estimator</h3>
                 <p>Calculate road tax obligations based on vehicle class, fuel type (Petrol/Diesel/EV), purchase cost, and seating capacity.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-white p-4 rounded-xl border border-slate-200">
+                  <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                     <p className="font-bold text-slate-900">Non-Transport Private Cars (LMV)</p>
                     <p className="text-slate-500 mt-1">One-time Lifetime Road Tax (15 Years): 8% to 12% of invoice price.</p>
                   </div>
-                  <div className="bg-white p-4 rounded-xl border border-slate-200">
+                  <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                     <p className="font-bold text-slate-900">Electric Vehicles (EV Fleet)</p>
                     <p className="text-emerald-700 font-bold mt-1">100% Tax Waiver under National Clean Air Policy.</p>
                   </div>
@@ -258,48 +258,48 @@ export default function VehicleServicesPage() {
               </div>
             )}
 
-            {/* Search Result Display */}
+            {/* Search Result Card */}
             {searchResult && (
-              <div className="bg-slate-950 text-white p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-2xl space-y-6 animate-in fade-in duration-300">
+              <div className="bg-slate-950 text-white p-8 rounded-3xl border border-slate-800 shadow-2xl space-y-6 animate-in fade-in duration-300">
                 <div className="flex flex-wrap items-center justify-between border-b pb-4 border-slate-800 gap-2">
                   <div>
                     <span className="text-[10px] font-black uppercase text-emerald-400 bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800">
                       OFFICIAL VAHAN RECORD FOUND
                     </span>
-                    <h3 className="text-xl font-black text-white mt-2">{searchResult.regNo}</h3>
+                    <h3 className="text-2xl font-black text-white mt-2 font-mono">{searchResult.regNo}</h3>
                   </div>
-                  <span className="text-xs font-bold text-orange-400 bg-white/10 px-3 py-1 rounded-xl">
+                  <span className="text-xs font-bold text-orange-400 bg-white/10 px-4 py-2 rounded-xl">
                     {searchResult.status}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
-                  <div>
+                  <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800">
                     <p className="text-slate-400 uppercase font-bold text-[10px]">Registered Owner Name</p>
                     <p className="text-sm font-black text-white mt-1">{searchResult.ownerName}</p>
                   </div>
 
-                  <div>
+                  <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800">
                     <p className="text-slate-400 uppercase font-bold text-[10px]">Vehicle Maker & Class</p>
                     <p className="text-sm font-black text-white mt-1">{searchResult.vehicleModel}</p>
                   </div>
 
-                  <div>
+                  <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800">
                     <p className="text-slate-400 uppercase font-bold text-[10px]">RTO Office Jurisdiction</p>
                     <p className="text-sm font-black text-white mt-1">{searchResult.rtoOffice}</p>
                   </div>
 
-                  <div>
+                  <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800">
                     <p className="text-slate-400 uppercase font-bold text-[10px]">Fitness Valid Up To</p>
                     <p className="text-sm font-black text-emerald-400 mt-1">{searchResult.fitnessValidUpTo}</p>
                   </div>
 
-                  <div>
+                  <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800">
                     <p className="text-slate-400 uppercase font-bold text-[10px]">Insurance Validity</p>
                     <p className="text-sm font-black text-emerald-400 mt-1">{searchResult.insuranceValidUpTo}</p>
                   </div>
 
-                  <div>
+                  <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800">
                     <p className="text-slate-400 uppercase font-bold text-[10px]">Financier / Hypothecation</p>
                     <p className="text-sm font-black text-amber-400 mt-1">{searchResult.hypothecation}</p>
                   </div>
@@ -309,23 +309,23 @@ export default function VehicleServicesPage() {
           </div>
         </section>
 
-        {/* SECTION 3: CORE VAHAN SERVICES GRID */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 pt-6">
+        {/* SECTION 3: CORE VAHAN SERVICES CARDS */}
+        <section className="max-w-7xl mx-auto px-6 sm:px-12 space-y-8 pt-4">
           <div className="text-center space-y-2 max-w-2xl mx-auto">
             <h2 className="text-3xl font-black text-slate-900 tracking-tight">
               {t.coreVehicleServicesTitle || "Core Vahan Citizen Services"}
             </h2>
-            <p className="text-xs text-slate-600 font-medium">
+            <p className="text-xs text-slate-600 font-medium leading-relaxed">
               {t.coreVehicleServicesSub || "Select a digital transport workflow below to initiate official government processing."}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             
-            {/* Card 1: Ownership Transfer */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-lg space-y-4 flex flex-col justify-between hover:border-orange-500 transition-all group">
+            {/* Card 1 */}
+            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xl space-y-4 flex flex-col justify-between hover:border-orange-500 transition-all group">
               <div className="space-y-4">
-                <div className="h-44 rounded-2xl overflow-hidden border border-slate-100">
+                <div className="h-48 rounded-2xl overflow-hidden border border-slate-100 shadow-inner">
                   <img src={INDIAN_GOVT_ASSETS.fourWheelerImg} alt="Vehicle Transfer" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                 </div>
                 <span className="text-[10px] font-black uppercase tracking-wider text-orange-600 bg-orange-50 px-2.5 py-1 rounded">
@@ -339,15 +339,15 @@ export default function VehicleServicesPage() {
                 </p>
               </div>
 
-              <Link href="/auth/login?redirect=/vehicle-services" className="block text-center w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs transition">
+              <Link href="/auth/login?redirect=/vehicle-services" className="block text-center w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs transition shadow">
                 Initiate Ownership Transfer →
               </Link>
             </div>
 
-            {/* Card 2: Fitness Certificate */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-lg space-y-4 flex flex-col justify-between hover:border-orange-500 transition-all group">
+            {/* Card 2 */}
+            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xl space-y-4 flex flex-col justify-between hover:border-orange-500 transition-all group">
               <div className="space-y-4">
-                <div className="h-44 rounded-2xl overflow-hidden border border-slate-100">
+                <div className="h-48 rounded-2xl overflow-hidden border border-slate-100 shadow-inner">
                   <img src={INDIAN_GOVT_ASSETS.commercialVehicleImg} alt="Fitness Certificate" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                 </div>
                 <span className="text-[10px] font-black uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded">
@@ -361,15 +361,15 @@ export default function VehicleServicesPage() {
                 </p>
               </div>
 
-              <Link href="/driving-slot" className="block text-center w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs transition">
+              <Link href="/driving-slot" className="block text-center w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs transition shadow">
                 Book Inspection Slot →
               </Link>
             </div>
 
-            {/* Card 3: Hypothecation Termination */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-lg space-y-4 flex flex-col justify-between hover:border-orange-500 transition-all group">
+            {/* Card 3 */}
+            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xl space-y-4 flex flex-col justify-between hover:border-orange-500 transition-all group">
               <div className="space-y-4">
-                <div className="h-44 rounded-2xl overflow-hidden border border-slate-100">
+                <div className="h-48 rounded-2xl overflow-hidden border border-slate-100 shadow-inner">
                   <img src={INDIAN_GOVT_ASSETS.digitalSmartCard} alt="Hypothecation" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                 </div>
                 <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded">
@@ -383,7 +383,7 @@ export default function VehicleServicesPage() {
                 </p>
               </div>
 
-              <Link href="/auth/login?redirect=/vehicle-services" className="block text-center w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs transition">
+              <Link href="/auth/login?redirect=/vehicle-services" className="block text-center w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs transition shadow">
                 Submit Form 35 Online →
               </Link>
             </div>
@@ -392,39 +392,39 @@ export default function VehicleServicesPage() {
         </section>
 
         {/* SECTION 4: GOVERNMENT INFRASTRUCTURE SHOWCASE */}
-        <section className="bg-slate-950 text-white py-16 border-y border-slate-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <section className="bg-slate-950 text-white py-20 border-y border-slate-800 mt-12">
+          <div className="max-w-7xl mx-auto px-6 sm:px-12 space-y-12">
             <div className="text-center space-y-3 max-w-3xl mx-auto">
-              <span className="text-[10px] font-black uppercase tracking-widest bg-orange-500 text-slate-950 px-3.5 py-1 rounded-full">
+              <span className="text-[10px] font-black uppercase tracking-widest bg-orange-500 text-slate-950 px-4 py-1.5 rounded-full">
                 NATIONAL TRANSPORT HIGHWAY INFRASTRUCTURE
               </span>
               <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
                 Government of India Digital Mobility Ecosystem
               </h2>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
                 Empowering over 300 million registered vehicle owners across India with instant electronic access, automated tolling, and unified inter-state connectivity.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 space-y-4">
-                <img src={INDIAN_GOVT_ASSETS.rtoBuildingImg} alt="RTO Headquarters" className="w-full h-48 object-cover rounded-2xl border border-slate-700" />
+              <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 space-y-4 shadow-xl">
+                <img src={INDIAN_GOVT_ASSETS.rtoBuildingImg} alt="RTO Headquarters" className="w-full h-52 object-cover rounded-2xl border border-slate-700 shadow-inner" />
                 <h3 className="text-base font-black text-white">Central RTO Digital Network</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">
                   1,400+ Regional Transport Offices interconnected through NIC central databases for real-time verification and zero-paper handling.
                 </p>
               </div>
 
-              <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 space-y-4">
-                <img src={INDIAN_GOVT_ASSETS.nicTechCenter} alt="NIC Data Center" className="w-full h-48 object-cover rounded-2xl border border-slate-700" />
+              <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 space-y-4 shadow-xl">
+                <img src={INDIAN_GOVT_ASSETS.nicTechCenter} alt="NIC Data Center" className="w-full h-52 object-cover rounded-2xl border border-slate-700 shadow-inner" />
                 <h3 className="text-base font-black text-white">NIC Cloud Infrastructure</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">
                   High-security cloud architecture maintained by National Informatics Centre ensuring 99.99% uptime for national citizen transport services.
                 </p>
               </div>
 
-              <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 space-y-4">
-                <img src={INDIAN_GOVT_ASSETS.helpdeskSupport} alt="Helpline Support" className="w-full h-48 object-cover rounded-2xl border border-slate-700" />
+              <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 space-y-4 shadow-xl">
+                <img src={INDIAN_GOVT_ASSETS.helpdeskSupport} alt="Helpline Support" className="w-full h-52 object-cover rounded-2xl border border-slate-700 shadow-inner" />
                 <h3 className="text-base font-black text-white">24/7 Citizen Helpdesk Support</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">
                   Dedicated national toll-free support (1800-180-0151) aiding citizens with vehicle transfers, NOC clearances, and e-Challan disputes.
